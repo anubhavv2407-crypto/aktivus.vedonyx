@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktivus | The Next-Gen Editing Platform</title>
+    
+    <!-- Google Fonts For Fallback & Sans Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        editorial: ['"Editorial New"', '"Canela"', '"Butler"', '"Noe Display"', '"Playfair Display"', 'serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            950: '#020005',
+                            900: '#080112',
+                            800: '#110222',
+                            DEFAULT: '#7c3aed',
+                            light: '#a78bfa',
+                            neon: '#c026d3',
+                            success: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Reset */
+        body {
+            background-color: #020005;
+            color: #ffffff;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* -------------------------
+           LUXURY NOISE TEXTURE
+           ------------------------- */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* -------------------------
+           PREMIUM LOADER
+           ------------------------- */
+        #premium-loader {
+            position: fixed;
+            inset: 0;
+            background-color: #020005;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
+        }
+
+        #loader-percentage {
+            font-size: 6rem;
+            font-weight: 400;
+            line-height: 1;
+            background: linear-gradient(135deg, #ffffff 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+        }
+
+        .loader-bar-container {
+            width: 240px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #loader-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: #a78bfa;
+            transition: width 0.1s linear;
+        }
+
+        body.loaded #premium-loader {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* -------------------------
+           DYNAMIC MOUSE GLOW
+           ------------------------- */
+        .cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle closest-side, rgba(124, 58, 237, 0.08), transparent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+            transition: top 0.1s ease-out, left 0.1s ease-out;
+            will-change: top, left;
+        }
+
+        /* -------------------------
+           ELEGANT TYPOGRAPHY
+           ------------------------- */
+        .text-italic-premium {
+            font-style: italic;
+            font-weight: 400;
+            color: #d8b4fe;
+            text-shadow: 0 0 30px rgba(167, 139, 250, 0.4);
+            display: inline-block;
+            padding-bottom: 0.1em;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            padding-bottom: 0.2em;
+            margin-bottom: -0.2em;
+            line-height: 1.1;
+        }
+
+        /* -------------------------
+           BENTO CARDS & GLASSMORPHISM
+           ------------------------- */
+        .premium-card {
+            background: rgba(10, 2, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .premium-card:hover::before { opacity: 1; }
+        .premium-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(124, 58, 237, 0.3);
+            box-shadow: 0 20px 50px -10px rgba(124, 58, 237, 0.15);
+        }
+
+        /* 3D Interactive Card */
+        .interactive-3d-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: transform 0.1s ease-out;
+        }
+
+        /* -------------------------
+           ULTRA-MINIMAL PRO TIMER
+           ------------------------- */
+        .pro-timer-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px 16px;
+            min-width: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+        @media (min-width: 640px) {
+            .pro-timer-card { min-width: 110px; padding: 28px 20px; }
+        }
+        .pro-timer-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* -------------------------
+           AUTHENTIC MINIMAL NLE UI
+           ------------------------- */
+        .pro-nle-container {
+            width: 100%;
+            background: #0a0a0a;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0,0,0,1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transform: translateZ(20px); 
+        }
+
+        /* Mac Window Header */
+        .pro-nle-header {
+            height: 36px;
+            background: #141414;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+        }
+        .mac-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .mac-close { background: #ed6a5e; }
+        .mac-min { background: #f4bf4f; }
+        .mac-max { background: #61c554; }
+
+        /* Timeline Ruler */
+        .pro-nle-ruler {
+            height: 28px;
+            background: #0f0f0f;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 4%);
+            background-position: bottom;
+            background-size: 100% 30%;
+            background-repeat: no-repeat;
+        }
+        .pro-timecode {
+            position: absolute;
+            bottom: 10px;
+            font-family: 'Inter', monospace;
+            font-size: 9px;
+            color: rgba(255,255,255,0.4);
+            transform: translateX(-50%);
+        }
+
+        /* Sleek Playhead */
+        .pro-playhead {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 30;
+            box-shadow: 0 0 10px rgba(255,255,255,0.4);
+            animation: proSweep 6s ease-in-out infinite alternate;
+            will-change: left;
+            transform: translateZ(0); 
+        }
+        .pro-playhead-cap {
+            position: absolute;
+            top: 0; left: -5px;
+            width: 11px; height: 10px;
+            background: #ffffff;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+        }
+
+        /* Minimal Tracks */
+        .pro-track {
+            height: 44px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            display: flex;
+            background: #0a0a0a;
+            position: relative;
+        }
+
+        .pro-track-header {
+            width: 70px;
+            min-width: 70px;
+            background: #111111;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            z-index: 10;
+        }
+        .pro-track-name { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 500; }
+        
+        .pro-workspace {
+            flex-grow: 1;
+            position: relative;
+            background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.01) 0, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 10%);
+        }
+
+        /* Clean Clips */
+        .pro-clip {
+            position: absolute;
+            top: 6px; bottom: 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: filter 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .pro-clip:hover {
+            filter: brightness(1.2);
+            transform: scaleY(1.05);
+            z-index: 20;
+        }
+        .pro-clip-video { background: #2e1a4f; border-color: #4a2b7a; }
+        .pro-clip-audio { background: #1a2e35; border-color: #2b4a52; align-items: flex-end;}
+        
+        .pro-clip-label {
+            position: absolute;
+            top: 4px; left: 8px;
+            font-size: 9px;
+            color: rgba(255,255,255,0.9);
+            white-space: nowrap;
+        }
+        
+        /* Subtle Waveform */
+        .pro-waveform {
+            width: 100%; height: 60%;
+            background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.2) 0, rgba(255,255,255,0.2) 1px, transparent 1px, transparent 3px);
+            margin-bottom: 2px;
+        }
+
+        @keyframes proSweep {
+            0% { left: 0%; }
+            100% { left: 100%; }
+        }
+
+        /* -------------------------
+           ANIMATIONS & INTERACTIONS
+           ------------------------- */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-3d {
+            opacity: 0;
+            transform: translateY(60px) rotateX(-10deg) scale(0.98);
+            transform-origin: top center;
+            transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .is-visible {
+            opacity: 1 !important;
+            transform: translateY(0) rotateX(0) scale(1) !important;
+        }
+
+        /* Waitlist Unified Form */
+        .unified-form {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .unified-form:focus-within {
+            border-color: rgba(167, 139, 250, 0.5);
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Magnetic Button Glow */
+        .magnetic-btn {
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .magnetic-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 150%; height: 150%;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.5) 0%, transparent 50%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+            pointer-events: none;
+        }
+        .magnetic-btn:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Success State Animation */
+        .btn-success {
+            background-color: #10b981 !important;
+            color: white !important;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4) !important;
+            border-color: #10b981 !important;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand selection:text-white overflow-hidden">
+
+    <!-- Film Grain Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Dynamic Cursor Glow -->
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <!-- 1. Cinematic Loader -->
+    <div id="premium-loader">
+        <div class="loader-content text-center">
+            <div id="loader-percentage" class="font-editorial">0%</div>
+            <div class="loader-bar-container mx-auto">
+                <div id="loader-bar"></div>
+            </div>
+            <div class="mt-8 text-[11px] tracking-[0.4em] text-white uppercase font-inter">
+                Initializing Experience
+            </div>
+            <div class="mt-3 text-[9px] tracking-[0.3em] text-gray-500 uppercase font-inter">
+                A digital experience by Vedonyx
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 transition-all duration-500 backdrop-blur-xl border-b border-transparent" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 md:px-8 h-24 flex items-center justify-between">
+            <div class="flex items-center gap-4 cursor-pointer group">
+                <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-8 md:h-10 w-auto transition-transform group-hover:scale-105 duration-500 object-contain">
+            </div>
+            <div class="hidden sm:flex items-center gap-3 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm bg-white/5">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-light opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-light"></span>
+                </span>
+                <div class="text-[10px] font-medium text-gray-300 tracking-[0.2em] uppercase">
+                    Beta Version 2.0
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 w-full flex flex-col items-center">
+
+        <!-- 2. HERO SECTION -->
+        <section class="min-h-[95vh] flex flex-col justify-center items-center px-4 md:px-6 relative w-full max-w-6xl mx-auto">
+            <div class="text-center w-full mt-24">
+                
+                <!-- #1 ON YT JOBS Premium Badge -->
+                <a href="https://ytjobs.co/talent/profile/290250" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-gray-300 text-[10px] sm:text-xs font-inter font-medium mb-8 tracking-[0.2em] uppercase reveal-up shadow-[0_0_15px_rgba(192,38,211,0.15)] hover:bg-white/10 hover:shadow-[0_0_25px_rgba(192,38,211,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer" style="transition-delay: 0.05s;">
+                    <i data-lucide="trophy" class="w-3.5 h-3.5 text-brand-neon"></i>
+                    <span>#1 ON YT JOBS</span>
+                </a>
+
+                <h1 class="font-editorial text-5xl md:text-7xl lg:text-[7.5rem] tracking-tight leading-[1.05] mb-8 relative">
+                    <div class="reveal-up" style="transition-delay: 0.1s;">The new standard in</div>
+                    <div class="reveal-up pb-4" style="transition-delay: 0.2s;">
+                        <span class="text-italic-premium">video</span> 
+                        <span class="text-gradient">editing.</span>
+                    </div>
+                </h1>
+
+                <p class="text-base md:text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-16 reveal-up" style="transition-delay: 0.4s;">
+                    Leave the lag behind. Aktivus introduces a lightning-fast, highly intelligent platform built exclusively for elite creators and modern workflows.
+                </p>
+
+                <!-- Functional Premium Waitlist Form -->
+                <div class="max-w-xl mx-auto w-full reveal-up" style="transition-delay: 0.6s;">
+                    <form id="waitlist-form" class="unified-form flex flex-col sm:flex-row items-center p-2 rounded-3xl sm:rounded-full backdrop-blur-md w-full shadow-2xl">
+                        <div class="w-full relative flex-1">
+                            <i data-lucide="mail" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                            <input type="email" id="email-input" placeholder="Enter your email address..." required class="w-full bg-transparent text-white placeholder-gray-500 pl-12 pr-4 py-4 sm:py-3 focus:outline-none font-inter text-sm md:text-base">
+                        </div>
+                        <button type="submit" id="magnetic-btn" class="magnetic-btn w-full sm:w-auto font-inter text-sm font-semibold tracking-wide bg-white text-brand-950 px-8 py-4 sm:py-3 rounded-2xl sm:rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] mt-2 sm:mt-0 flex-shrink-0">
+                            <span id="btn-text" class="flex items-center gap-2">Request Access</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PROFESSIONAL COUNTDOWN & FEATURES -->
+        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                
+                <!-- Sleek Minimal Countdown Panel (Interactive 3D) -->
+                <div id="interactive-card" class="premium-card p-8 md:p-12 lg:col-span-3 flex flex-col justify-between reveal-3d interactive-3d-card" style="transition-delay: 0.1s;">
+                    
+                    <div class="mb-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h3 class="font-editorial text-2xl text-white mb-1">Beta Platform Unlocks</h3>
+                            <p class="text-[11px] uppercase tracking-widest text-gray-500 font-inter">Global Release Schedule</p>
+                        </div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-white/10 shadow-inner">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-light animate-pulse"></span>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-300 font-medium">Systems Nominal</span>
+                        </div>
+                    </div>
+
+                    <!-- Refined Glass Timer -->
+                    <div id="countdown" class="flex items-center justify-center sm:justify-start gap-3 sm:gap-4 w-full mb-12">
+                        
+                        <div class="pro-timer-card">
+                            <div id="days" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mt-2 font-medium">Days</div>
+                        </div>
+                        
+                        <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
+                        
+                        <div class="pro-timer-card">
+                            <div id="hours" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mt-2 font-medium">Hours</div>
+                        </div>
+                        
+                        <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
+                        
+                        <div class="pro-timer-card">
+                            <div id="minutes" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mt-2 font-medium">Mins</div>
+                        </div>
+                        
+                        <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
+                        
+                        <div class="pro-timer-card border-brand/40 bg-brand/10 shadow-[0_0_40px_rgba(124,58,237,0.15)] transform hover:-translate-y-1 transition-transform">
+                            <div id="seconds" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight text-shadow-sm" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-brand-light mt-2 font-medium">Secs</div>
+                        </div>
+                    </div>
+
+                    <!-- Authentic Minimal Software Timeline -->
+                    <div class="pro-nle-container w-full">
+                        <!-- Header -->
+                        <div class="pro-nle-header">
+                            <div class="mac-dot mac-close"></div>
+                            <div class="mac-dot mac-min"></div>
+                            <div class="mac-dot mac-max"></div>
+                            <div class="ml-4 text-[10px] text-gray-500 font-inter tracking-widest select-none">aktivus-project-v2.akt</div>
+                            
+                            <!-- Static Timecode (Visual Only) -->
+                            <div class="ml-auto flex items-center gap-4">
+                                <span class="text-brand-light font-editorial text-[13px] tracking-widest bg-black/50 px-2 py-0.5 rounded border border-white/10 shadow-inner select-none" style="font-variant-numeric: tabular-nums;">00:00:15:24</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Workspace Area -->
+                        <div class="relative w-full overflow-hidden flex flex-col">
+                            <!-- Playhead Layer -->
+                            <div class="absolute inset-y-0 left-0 right-10 pointer-events-none z-30">
+                                <div class="pro-playhead">
+                                    <div class="pro-playhead-cap"></div>
+                                </div>
+                            </div>
+
+                            <!-- Ruler -->
+                            <div class="pro-nle-ruler ml-[70px]">
+                                <span class="pro-timecode" style="left: 10%;">01:00</span>
+                                <span class="pro-timecode" style="left: 30%;">01:15</span>
+                                <span class="pro-timecode" style="left: 50%;">01:30</span>
+                                <span class="pro-timecode" style="left: 70%;">01:45</span>
+                                <span class="pro-timecode" style="left: 90%;">02:00</span>
+                            </div>
+
+                            <!-- Track V1 -->
+                            <div class="pro-track">
+                                <div class="pro-track-header">
+                                    <span class="pro-track-name">V1</span>
+                                    <i data-lucide="eye" class="w-3.5 h-3.5 text-gray-600"></i>
+                                </div>
+                                <div class="pro-workspace">
+                                    <div class="pro-clip pro-clip-video" style="left: 5%; width: 40%;">
+                                        <span class="pro-clip-label">A001_C014_1018.mp4</span>
+                                    </div>
+                                    <div class="pro-clip pro-clip-video" style="left: 48%; width: 30%; opacity: 0.8;">
+                                        <span class="pro-clip-label">B-Roll_Drone.mov</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Track A1 -->
+                            <div class="pro-track">
+                                <div class="pro-track-header">
+                                    <span class="pro-track-name">A1</span>
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-gray-600"></i>
+                                </div>
+                                <div class="pro-workspace">
+                                    <div class="pro-clip pro-clip-audio" style="left: 5%; width: 40%;">
+                                        <div class="pro-waveform"></div>
+                                    </div>
+                                    <div class="pro-clip pro-clip-audio" style="left: 48%; width: 30%; opacity: 0.8;">
+                                        <div class="pro-waveform"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Feature 1: Neural Processing -->
+                <div class="premium-card p-10 lg:col-span-2 flex flex-col justify-center reveal-3d" style="transition-delay: 0.2s;">
+                    <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-8 backdrop-blur-md">
+                        <i data-lucide="cpu" class="w-5 h-5 text-brand-light"></i>
+                    </div>
+                    <h3 class="font-editorial text-3xl text-white mb-4">Neural Engine</h3>
+                    <p class="text-gray-400 text-sm font-light leading-relaxed">
+                        Proprietary AI analyzes your footage in real-time. Smart cuts, auto-color matching, and flawless tracking without leaving the timeline.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. EXTENDED SECTION: THE ECOSYSTEM -->
+        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal-up">
+                <p class="text-[10px] uppercase tracking-[0.3em] text-brand-light mb-4 font-medium">Core Modules</p>
+                <h2 class="font-editorial text-4xl md:text-5xl text-white">The Aktivus Ecosystem</h2>
+                <p class="text-gray-400 mt-4 font-light text-lg">Everything you need, unified in one elegant workspace.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="premium-card p-10 flex flex-col justify-between min-h-[300px] reveal-3d" style="transition-delay: 0.1s;">
+                    <div>
+                        <i data-lucide="layers" class="w-6 h-6 text-white mb-6"></i>
+                        <h3 class="font-editorial text-2xl text-white mb-3">Fluid Timeline</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">
+                            A magnetic, layerless timeline that adapts to your storytelling, not the other way around.
+                        </p>
+                    </div>
+                    <div class="w-full h-1 bg-gradient-to-r from-brand to-transparent mt-8 rounded-full opacity-50"></div>
+                </div>
+
+                <div class="premium-card p-10 flex flex-col justify-between min-h-[300px] reveal-3d" style="transition-delay: 0.2s;">
+                    <div>
+                        <i data-lucide="aperture" class="w-6 h-6 text-brand-neon mb-6"></i>
+                        <h3 class="font-editorial text-2xl text-white mb-3">Cinematic Color</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">
+                            Node-based grading system rivaling studio software, powered by our instant cloud rendering.
+                        </p>
+                    </div>
+                    <div class="w-full h-1 bg-gradient-to-r from-brand-neon to-transparent mt-8 rounded-full opacity-50"></div>
+                </div>
+
+                <div class="premium-card p-10 flex flex-col justify-between min-h-[300px] reveal-3d" style="transition-delay: 0.3s;">
+                    <div>
+                        <i data-lucide="waveform-lines" class="w-6 h-6 text-brand-light mb-6"></i>
+                        <h3 class="font-editorial text-2xl text-white mb-3">Spatial Audio</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">
+                            AI-driven audio cleanup and 3D mixing console built natively into your editing bay.
+                        </p>
+                    </div>
+                    <div class="w-full h-1 bg-gradient-to-r from-brand-light to-transparent mt-8 rounded-full opacity-50"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 7. FAQ SECTION (NEW) -->
+        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-3xl mx-auto">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-editorial text-4xl text-white">Frequently Asked</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="premium-card p-6 reveal-up" style="transition-delay: 0.1s;">
+                    <h4 class="font-inter font-semibold text-white text-lg">Is Aktivus entirely cloud-based?</h4>
+                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Yes, Aktivus leverages a hybrid architecture. Your heavy rendering is offloaded to our cloud farms, while playback remains lightning-fast locally in your browser or desktop app.</p>
+                </div>
+                <div class="premium-card p-6 reveal-up" style="transition-delay: 0.2s;">
+                    <h4 class="font-inter font-semibold text-white text-lg">Will it support third-party plugins?</h4>
+                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">At launch, we will support standard OpenFX plugins. We are also building a native ecosystem for creators to publish their own node-based effects.</p>
+                </div>
+                <div class="premium-card p-6 reveal-up" style="transition-delay: 0.3s;">
+                    <h4 class="font-inter font-semibold text-white text-lg">When will the Beta officially launch?</h4>
+                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">The timer above indicates our global rollout date. However, waitlisted users will receive staggered access invites leading up to the main event.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manifesto Quote -->
+        <section class="pb-24 pt-12 px-4 w-full max-w-5xl mx-auto">
+             <div class="premium-card p-12 flex flex-col items-center justify-center reveal-3d text-center">
+                <i data-lucide="quote" class="w-8 h-8 text-brand-light/30 mb-6"></i>
+                <p class="font-editorial text-2xl md:text-3xl text-gray-200 italic leading-relaxed max-w-2xl">
+                    "We built Aktivus because we were tired of tools that crashed, lagged, and felt a decade old. Welcome to the future."
+                </p>
+                <p class="mt-8 text-[10px] tracking-[0.3em] uppercase text-gray-500 font-inter">— The Aktivus Team</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 8. FOOTER -->
+    <footer class="mt-10 border-t border-white/5 py-12 px-6 md:px-8 relative z-10 w-full">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-5 md:h-6 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity">
+                <span class="text-gray-600 text-xs ml-2">© 2026</span>
+            </div>
+            
+            <div class="flex gap-8 text-gray-500">
+                <!-- X (Twitter) Official SVG -->
+                <a href="https://x.com/Aktivuslimited" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 transition-all duration-300" aria-label="X (Twitter)">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <!-- Instagram Official Outline SVG -->
+                <a href="https://www.instagram.com/aktivus.in" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 transition-all duration-300" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <!-- Discord Official SVG -->
+                <a href="https://discord.gg/wwAn2yMWx4" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 transition-all duration-300" aria-label="Discord">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // ---------------------------------
+        // LOADER ANIMATION LOGIC
+        // ---------------------------------
+        document.addEventListener("DOMContentLoaded", () => {
+            let progress = 0;
+            const percentageEl = document.getElementById("loader-percentage");
+            const barEl = document.getElementById("loader-bar");
+            const bodyEl = document.body;
+
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 4) + 1; 
+                
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    percentageEl.innerText = progress + "%";
+                    barEl.style.width = progress + "%";
+                    
+                    setTimeout(() => {
+                        bodyEl.classList.add("loaded");
+                        bodyEl.classList.remove("overflow-hidden");
+                        setTimeout(initScrollReveals, 500); 
+                    }, 800);
+                } else {
+                    percentageEl.innerText = progress + "%";
+                    barEl.style.width = progress + "%";
+                }
+            }, 30);
+        });
+
+        // ---------------------------------
+        // DYNAMIC MOUSE GLOW & CARD HOVER
+        // ---------------------------------
+        const cursorGlow = document.getElementById('cursor-glow');
+        const cards = document.querySelectorAll('.premium-card');
+        const interactiveCard = document.getElementById('interactive-card');
+
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                // Global glow
+                requestAnimationFrame(() => {
+                    cursorGlow.style.top = `${e.clientY}px`;
+                    cursorGlow.style.left = `${e.clientX}px`;
+                });
+
+                // Card inner glow
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+
+            // 3D Tilt effect on Timeline Card
+            if(interactiveCard) {
+                interactiveCard.addEventListener('mousemove', (e) => {
+                    const rect = interactiveCard.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -4; // Max 4 deg
+                    const rotateY = ((x - centerX) / centerX) * 4;
+                    
+                    interactiveCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+                });
+                
+                interactiveCard.addEventListener('mouseleave', () => {
+                    interactiveCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+                });
+            }
+        }
+
+        // ---------------------------------
+        // WORKING WAITLIST FORM LOGIC
+        // ---------------------------------
+        const waitlistForm = document.getElementById('waitlist-form');
+        const magneticBtn = document.getElementById('magnetic-btn');
+        const btnText = document.getElementById('btn-text');
+        const emailInput = document.getElementById('email-input');
+
+        if(waitlistForm) {
+            waitlistForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                if(!emailInput.value) return;
+
+                // 1. Loading State
+                btnText.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Processing...`;
+                lucide.createIcons();
+                magneticBtn.style.pointerEvents = 'none';
+
+                // Simulate API Call (2 seconds delay)
+                setTimeout(() => {
+                    // 2. Success State
+                    btnText.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Access Requested`;
+                    magneticBtn.classList.add('btn-success');
+                    emailInput.value = '';
+                    emailInput.placeholder = 'You are on the list!';
+                    lucide.createIcons();
+                    
+                    // Reset back after 4 seconds
+                    setTimeout(() => {
+                        btnText.innerHTML = `Request Access`;
+                        magneticBtn.classList.remove('btn-success');
+                        magneticBtn.style.pointerEvents = 'auto';
+                        emailInput.placeholder = 'Enter your email address...';
+                    }, 4000);
+                }, 2000);
+            });
+        }
+
+        // ---------------------------------
+        // MAGNETIC BUTTON EFFECT
+        // ---------------------------------
+        if (window.matchMedia("(pointer: fine)").matches && magneticBtn) {
+            magneticBtn.addEventListener('mousemove', (e) => {
+                const rect = magneticBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                magneticBtn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(1.02)`;
+            });
+
+            magneticBtn.addEventListener('mouseleave', () => {
+                if(!magneticBtn.classList.contains('btn-success')) {
+                    magneticBtn.style.transform = `translate(0px, 0px) scale(1)`;
+                }
+            });
+        }
+
+        // ---------------------------------
+        // INTERSECTION OBSERVER (Scroll Reveals)
+        // ---------------------------------
+        function initScrollReveals() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal-up, .reveal-3d');
+            revealElements.forEach(el => observer.observe(el));
+        }
+
+        // ---------------------------------
+        // NAVBAR BLUR ON SCROLL
+        // ---------------------------------
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-[#020005]/80', 'border-white/5');
+                navbar.classList.remove('border-transparent');
+                navbar.classList.replace('h-24', 'h-20');
+            } else {
+                navbar.classList.remove('bg-[#020005]/80', 'border-white/5');
+                navbar.classList.add('border-transparent');
+                navbar.classList.replace('h-20', 'h-24');
+            }
+        });
+
+        // ---------------------------------
+        // CREATIVE COUNTDOWN TIMER LOGIC
+        // ---------------------------------
+        const countdownDate = new Date("March 27, 2026 12:00:00"); 
+
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = countdownDate.getTime() - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if(daysEl) daysEl.innerText = days.toString().padStart(2, '0');
+            if(hoursEl) hoursEl.innerText = hours.toString().padStart(2, '0');
+            if(minutesEl) minutesEl.innerText = minutes.toString().padStart(2, '0');
+            
+            if(secondsEl) {
+                secondsEl.innerText = seconds.toString().padStart(2, '0');
+            }
+        }
+        
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+    </script>
+</body>
+</html>
