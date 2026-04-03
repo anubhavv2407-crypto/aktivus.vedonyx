@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aktivus | The Next-Gen Post-Production Platform</title>
+    <title>Aktivus | The Next-Gen Media Production Platform</title>
     
     <!-- Google Fonts For Fallback & Sans Serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,6 +52,28 @@
             overflow-x: hidden;
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
+            /* Prevent touch gestures from scrolling while dragging 3D object on mobile */
+            overscroll-behavior-y: none; 
+        }
+
+        /* -------------------------
+           EXTREME DARK PURPLE SCROLLBAR
+           ------------------------- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #010002; 
+            border-left: 1px solid rgba(255,255,255,0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b0764, #4a044e); 
+            border-radius: 10px;
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #581c87, #701a75); 
         }
 
         /* -------------------------
@@ -67,6 +89,7 @@
             justify-content: center;
             align-items: center;
             transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
+            will-change: transform, opacity;
         }
 
         #loader-percentage {
@@ -114,11 +137,101 @@
             height: 800px;
             background: radial-gradient(circle closest-side, rgba(167, 139, 250, 0.05), transparent);
             border-radius: 50%;
-            transform: translate(-50%, -50%);
             pointer-events: none;
             z-index: -1;
-            transition: top 0.1s ease-out, left 0.1s ease-out;
-            will-change: top, left;
+            will-change: transform;
+            transform: translate3d(-500px, -500px, 0); 
+        }
+
+        /* -------------------------
+           HERO 3D BACKGROUND (DRAGGABLE GLOBE EFFECT)
+           ------------------------- */
+        #hero-interactive-wrapper {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+            position: absolute;
+            inset: 0;
+            overflow: visible; 
+            z-index: 10; /* Allows dragging */
+            pointer-events: auto; /* Active for drag */
+            cursor: grab;
+        }
+        
+        #hero-interactive-wrapper:active {
+            cursor: grabbing;
+        }
+
+        #hero-bg-container {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
+            /* Initial rotation */
+            transform: translate3d(0,0,0) rotateX(15deg) rotateY(45deg);
+        }
+
+        .hero-entrance {
+            animation: hero3DEnter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            will-change: transform, opacity;
+        }
+        @keyframes hero3DEnter {
+            0% { opacity: 0; transform: scale(1.1) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* 3D Sphere structure */
+        .hero-bg-orb {
+            position: absolute;
+            width: 40vw; height: 40vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(192, 38, 211, 0.15) 0%, transparent 70%);
+            box-shadow: 0 0 100px rgba(124, 58, 237, 0.2), inset 0 0 50px rgba(192, 38, 211, 0.2);
+            /* Soft pulse, independent of rotation */
+            animation: pulseOrb 4s infinite alternate ease-in-out;
+            transform: translate3d(0,0,0); 
+            will-change: transform, opacity;
+        }
+
+        .hero-bg-ring {
+            position: absolute;
+            width: 65vw; height: 65vw;
+            border: 1px solid rgba(167, 139, 250, 0.25);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(192, 38, 211, 0.1), inset 0 0 20px rgba(124, 58, 237, 0.1);
+            transform-style: preserve-3d;
+            backface-visibility: hidden; /* Performance boost */
+            will-change: transform;
+        }
+        
+        /* Arrange rings to form a globe */
+        .ring-equator { transform: rotateX(90deg); }
+        .ring-meridian-1 { transform: rotateY(0deg); }
+        .ring-meridian-2 { transform: rotateY(60deg); }
+        .ring-meridian-3 { transform: rotateY(120deg); }
+
+        /* Floating 3D Glass Shards attached to the globe */
+        .glass-shard {
+            position: absolute;
+            /* Zero-lag opaque gradient to mimic tinted glass */
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(124, 58, 237, 0.15));
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 0 15px rgba(192, 38, 211, 0.4);
+            will-change: transform;
+            transform-style: preserve-3d;
+        }
+        
+        /* Shards positioned in 3D space relative to the center */
+        .shard-1 { width: 80px; height: 80px; transform: translate3d(20vw, 15vw, 10vw) rotateY(45deg) rotateX(20deg); }
+        .shard-2 { width: 120px; height: 120px; border-radius: 50%; transform: translate3d(-25vw, -10vw, 15vw) rotateY(-30deg) rotateX(-15deg); }
+        .shard-3 { width: 60px; height: 60px; border-radius: 8px; transform: translate3d(0, -25vw, -10vw) rotateX(60deg); }
+
+        @keyframes pulseOrb {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            100% { transform: scale(1.1); opacity: 1; }
         }
 
         /* -------------------------
@@ -128,7 +241,7 @@
             font-style: italic;
             font-weight: 400;
             color: #d8b4fe;
-            text-shadow: 0 0 35px rgba(167, 139, 250, 0.5);
+            text-shadow: 0 0 40px rgba(167, 139, 250, 0.6);
             display: inline-block;
             padding-bottom: 0.1em;
         }
@@ -142,10 +255,11 @@
             padding-bottom: 0.2em;
             margin-bottom: -0.2em;
             line-height: 1.1;
+            filter: drop-shadow(0 15px 25px rgba(192, 38, 211, 0.3));
         }
 
         /* -------------------------
-           PREMIUM SHINE BADGE
+           PREMIUM SHINE BADGES
            ------------------------- */
         .shine-badge {
             position: relative;
@@ -153,6 +267,9 @@
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(192, 38, 211, 0.2), inset 0 0 10px rgba(255,255,255,0.05);
             border: 1px solid rgba(255, 255, 255, 0.15);
+            /* pointer events auto required to make it clickable above the 3D wrapper */
+            pointer-events: auto; 
+            will-change: transform, box-shadow;
         }
         .shine-badge::before {
             content: '';
@@ -175,8 +292,8 @@
             animation: shineSweep 3s infinite;
         }
         .shine-badge:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 0 35px rgba(192, 38, 211, 0.6), inset 0 0 15px rgba(255,255,255,0.2);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 0 40px rgba(192, 38, 211, 0.7), inset 0 0 15px rgba(255,255,255,0.3);
             border-color: transparent;
         }
         .shine-badge:hover::before { opacity: 1; }
@@ -191,36 +308,72 @@
             100% { background-position: 200% 50%; }
         }
 
+        /* Beta Version Hover Effect */
+        .beta-badge {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform, box-shadow;
+        }
+        .beta-badge::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.6), transparent);
+            transition: left 0.5s ease;
+        }
+        .beta-badge:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 40px rgba(192, 38, 211, 0.6);
+            border-color: rgba(192, 38, 211, 0.8);
+        }
+        .beta-badge:hover::after {
+            left: 100%;
+        }
+
         /* -------------------------
            BENTO CARDS & GLASSMORPHISM
            ------------------------- */
         .premium-card {
-            background: rgba(12, 3, 25, 0.5);
+            background: rgba(12, 3, 25, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 24px;
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Reduced blur for better scrolling performance */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease, border-color 0.5s ease;
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);
+            will-change: transform;
         }
 
+        /* Shimmer sweep effect on cards */
         .premium-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.08), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.5s;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.7s ease;
+            z-index: 1;
             pointer-events: none;
         }
 
-        .premium-card:hover::before { opacity: 1; }
+        .premium-card:hover::before { left: 200%; }
         .premium-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(167, 139, 250, 0.4);
-            box-shadow: 0 25px 60px -10px rgba(124, 58, 237, 0.3), inset 0 0 25px rgba(0,0,0,0.8);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(167, 139, 250, 0.5);
+            box-shadow: 0 30px 60px -10px rgba(124, 58, 237, 0.4), inset 0 0 25px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+
+        /* 3D Interactive Card */
+        .interactive-3d-card {
+            transform-style: preserve-3d;
+            transform: perspective(1500px);
+            transition: transform 0.15s ease-out;
+            will-change: transform;
         }
 
         /* -------------------------
@@ -236,42 +389,43 @@
             transform: translateY(-50%);
             z-index: 0;
             border-radius: 3px;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 0 5px rgba(167,139,250,0.1);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 0 10px rgba(167,139,250,0.1);
             overflow: visible;
         }
         
         .energy-beam {
             position: absolute;
-            top: -1px; left: 0;
-            width: 150px; height: 5px;
+            top: -2px; left: 0;
+            width: 180px; height: 7px;
             background: linear-gradient(90deg, transparent, #fff, #c026d3, #fff, transparent);
             border-radius: 10px;
-            box-shadow: 0 0 20px 5px #c026d3, 0 0 40px 10px #7c3aed, 0 0 60px 15px rgba(255,255,255,0.5);
-            animation: beamTravel 3s cubic-bezier(0.6, 0.04, 0.98, 0.33) infinite;
+            box-shadow: 0 0 30px 8px #c026d3, 0 0 50px 15px #7c3aed, 0 0 80px 20px rgba(255,255,255,0.6);
+            animation: beamTravel 2.5s cubic-bezier(0.5, 0.05, 0.9, 0.4) infinite;
             z-index: 2;
+            will-change: left, transform;
         }
         .energy-beam-2 {
-            animation: beamTravel 3s cubic-bezier(0.6, 0.04, 0.98, 0.33) infinite;
-            animation-delay: 1.5s;
-            width: 100px;
+            animation: beamTravel 3.5s cubic-bezier(0.5, 0.05, 0.9, 0.4) infinite;
+            animation-delay: 1s;
+            width: 120px;
             background: linear-gradient(90deg, transparent, #fff, #7c3aed, transparent);
-            box-shadow: 0 0 20px 5px #7c3aed, 0 0 40px 10px #c026d3;
+            box-shadow: 0 0 30px 8px #7c3aed, 0 0 50px 15px #c026d3;
         }
 
         @keyframes beamTravel {
             0% { left: -20%; opacity: 0; transform: scaleX(0.5); }
-            10% { opacity: 1; transform: scaleX(1.5); }
-            90% { opacity: 1; transform: scaleX(1.5); }
+            10% { opacity: 1; transform: scaleX(1.8); }
+            90% { opacity: 1; transform: scaleX(1.8); }
             100% { left: 110%; opacity: 0; transform: scaleX(0.5); }
         }
 
-        /* Continuous Pulse for Ecosystem Icons */
         .icon-pulse {
-            animation: iconGlow 2s infinite alternate;
+            animation: iconGlow 2s infinite alternate ease-in-out;
+            will-change: filter, transform;
         }
         @keyframes iconGlow {
-            0% { filter: drop-shadow(0 0 5px currentColor); }
-            100% { filter: drop-shadow(0 0 20px currentColor); }
+            0% { filter: drop-shadow(0 0 5px currentColor); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 25px currentColor); transform: scale(1.1); }
         }
 
         /* -------------------------
@@ -290,22 +444,20 @@
             backdrop-filter: blur(15px);
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px -10px rgba(0,0,0,0.8);
             transition: border-color 0.3s ease, transform 0.3s ease;
+            will-change: transform;
         }
         @media (min-width: 640px) {
             .pro-timer-card { min-width: 110px; padding: 28px 20px; }
         }
         .pro-timer-card:hover {
             border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: inset 0 0 25px rgba(0,0,0,0.6), 0 15px 40px -10px rgba(167,139,250,0.3);
         }
 
         /* -------------------------
            EXTREME 3D PRODUCTION UI
            ------------------------- */
-        .interactive-3d-wrapper {
-            perspective: 1500px;
-            transform-style: preserve-3d;
-        }
         .pro-nle-container {
             width: 100%;
             background: #080808;
@@ -315,16 +467,16 @@
             box-shadow: 
                 0 35px 60px -15px rgba(0, 0, 0, 1), 
                 0 0 0 1px rgba(0,0,0,1),
-                0 20px 40px rgba(124,58,237,0.15);
+                0 20px 50px rgba(124,58,237,0.2);
             display: flex;
             flex-direction: column;
             position: relative;
-            transform: rotateX(5deg) scale(0.98);
+            transform: rotateX(5deg) scale(0.98) translateZ(30px);
             transform-origin: bottom center;
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease;
+            transition: transform 0.4s ease-out, box-shadow 0.4s ease;
             will-change: transform;
         }
-        /* Glossy Screen Reflection */
+        
         .pro-nle-container::after {
             content: '';
             position: absolute;
@@ -335,11 +487,11 @@
         }
 
         .pro-nle-container:hover {
-            transform: rotateX(0deg) scale(1);
+            transform: rotateX(0deg) scale(1) translateZ(50px);
             box-shadow: 
-                0 45px 70px -15px rgba(0, 0, 0, 1), 
+                0 45px 80px -15px rgba(0, 0, 0, 1), 
                 0 0 0 1px rgba(0,0,0,1),
-                0 25px 50px rgba(192,38,211,0.2);
+                0 35px 70px rgba(192,38,211,0.4);
         }
 
         .pro-nle-header {
@@ -353,7 +505,8 @@
             position: relative;
             z-index: 10;
         }
-        .mac-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
+        .mac-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;}
+        .mac-dot:hover { filter: brightness(1.5); }
         .mac-close { background: #ed6a5e; }
         .mac-min { background: #f4bf4f; }
         .mac-max { background: #61c554; }
@@ -369,16 +522,33 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
         }
-        .nle-tab.active { color: #fff; border-bottom: 2px solid #c026d3; padding-bottom: 4px; text-shadow: 0 0 10px rgba(192,38,211,0.5);}
+        .nle-tab:hover { color: #fff; }
+        .nle-tab.active { color: #fff; text-shadow: 0 0 10px rgba(192,38,211,0.8);}
+        .nle-tab.active::after {
+            content: ''; position: absolute; bottom: -12px; left: 0; width: 100%; height: 2px;
+            background: #c026d3; box-shadow: 0 -2px 10px #c026d3;
+        }
 
         .pro-nle-body {
             display: flex;
             flex-direction: column;
             background: #050505;
+            transition: filter 0.2s ease;
+        }
+        
+        .flash-effect {
+            animation: uiFlash 0.3s ease-out;
+        }
+        @keyframes uiFlash {
+            0% { filter: brightness(1.5) contrast(1.2); }
+            100% { filter: brightness(1) contrast(1); }
         }
 
-        /* NEW: Production Viewport & Meters */
+        /* Viewport & Meters */
         .pro-nle-viewport-area {
             height: 100px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -390,17 +560,34 @@
             padding: 10px;
             display: flex; flex-direction: column; gap: 4px;
         }
-        .media-item { height: 20px; background: #111; border-radius: 3px; border: 1px solid rgba(255,255,255,0.05); }
+        .media-item { 
+            height: 20px; background: #111; border-radius: 3px; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: background 0.2s;
+        }
+        .media-item:hover { background: #222; border-color: rgba(255,255,255,0.2); }
+        .media-item.active { background: #2d1b4e; border-color: #8b5cf6; }
+        
         .viewer {
             flex-grow: 1;
             background: #000;
             position: relative;
             display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+            overflow: hidden;
         }
+        .viewer:hover { box-shadow: inset 0 0 30px rgba(192,38,211,0.2); }
         .viewer::before {
             content: ''; position: absolute; inset: 0;
             background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
         }
+        
+        .play-btn-wrapper {
+            transition: transform 0.2s, filter 0.2s;
+            will-change: transform;
+        }
+        .play-btn-wrapper:hover { transform: scale(1.1); filter: drop-shadow(0 0 15px #c026d3); }
+
         .vu-meters {
             width: 15%;
             border-left: 1px solid rgba(255,255,255,0.05);
@@ -413,12 +600,15 @@
             background: linear-gradient(to top, #10b981 50%, #eab308 80%, #ef4444 100%);
             border-radius: 1px; opacity: 0.8;
             position: relative; overflow: hidden;
+            will-change: height;
         }
         .vu-bar::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%;
             background: #0a0a0a;
             animation: vuBounce 0.5s ease-in-out infinite alternate;
+            will-change: height;
         }
+        .vu-bar.paused::after { animation-play-state: paused; height: 90%; }
         .vu-bar:nth-child(2)::after { animation-delay: 0.2s; animation-duration: 0.6s; }
         
         @keyframes vuBounce { 0% { height: 80%; } 100% { height: 20%; } }
@@ -467,7 +657,10 @@
             box-shadow: 0 0 10px rgba(239,68,68,0.5);
             animation: pulseMarker 2s infinite;
             z-index: 40;
+            cursor: pointer;
+            will-change: opacity;
         }
+        .days-marker:hover { background: rgba(239,68,68,0.4); transform: translateX(-50%) scale(1.1); }
         @keyframes pulseMarker { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         .pro-playhead {
@@ -477,9 +670,12 @@
             background: #fff;
             z-index: 30;
             box-shadow: 0 0 15px 2px #c026d3;
-            animation: proSweep 8s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
-            will-change: left;
+            animation: proSweep 8s linear infinite; 
+            will-change: left, transform;
             transform: translateZ(0); 
+        }
+        .pro-playhead.paused {
+            animation-play-state: paused;
         }
         .pro-playhead-cap {
             position: absolute;
@@ -527,9 +723,22 @@
             display: flex;
             align-items: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-            transition: filter 0.2s, transform 0.2s;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            will-change: transform, filter;
         }
         .pro-clip:hover { filter: brightness(1.3); transform: scaleY(1.05); z-index: 20; }
+        
+        /* Interactive Working Clip Status */
+        .pro-clip.active-clip {
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(192,38,211,0.6), inset 0 0 10px rgba(255,255,255,0.3);
+            filter: brightness(1.5);
+            z-index: 25;
+            transform: scaleY(1.1) scaleX(1.02);
+            border-top-color: #fff !important;
+        }
+
         .pro-clip-video { background: #261642; border-color: #552d94; border-top-color: #8b5cf6;}
         .pro-clip-audio { background: #122830; border-color: #214e5e; border-top-color: #0ea5e9; align-items: flex-end;}
         
@@ -562,6 +771,7 @@
             opacity: 0;
             transform: translateY(50px);
             transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
         }
 
         .reveal-3d {
@@ -569,6 +779,7 @@
             transform: translateY(70px) rotateX(-10deg) scale(0.95);
             transform-origin: top center;
             transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
         }
 
         .is-visible {
@@ -581,11 +792,13 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            pointer-events: auto; 
+            will-change: box-shadow;
         }
         
         .unified-form:focus-within {
-            border-color: rgba(167, 139, 250, 0.5);
-            box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 0 40px rgba(192, 38, 211, 0.3);
             background: rgba(255, 255, 255, 0.05);
         }
 
@@ -597,31 +810,34 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
+            will-change: transform;
         }
         .magnetic-btn::before {
             content: '';
             position: absolute;
             top: 50%; left: 50%;
             width: 150%; height: 150%;
-            background: radial-gradient(circle, rgba(167, 139, 250, 0.5) 0%, transparent 50%);
+            background: radial-gradient(circle, rgba(192, 38, 211, 0.6) 0%, transparent 50%);
             transform: translate(-50%, -50%) scale(0);
             transition: transform 0.5s ease;
             pointer-events: none;
+            will-change: transform;
         }
         .magnetic-btn:hover::before {
             transform: translate(-50%, -50%) scale(1);
         }
+        .magnetic-btn:active { transform: scale(0.95) !important; }
         
         .btn-success {
             background-color: #10b981 !important;
             color: white !important;
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4) !important;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.6) !important;
             border-color: #10b981 !important;
             transform: scale(1.05);
         }
     </style>
 </head>
-<body class="antialiased selection:bg-brand selection:text-white overflow-hidden">
+<body class="antialiased selection:bg-brand selection:text-white overflow-x-hidden">
 
     <!-- Dynamic Cursor Glow -->
     <div class="cursor-glow" id="cursor-glow"></div>
@@ -646,15 +862,14 @@
     <nav class="fixed top-0 w-full z-40 transition-all duration-500 backdrop-blur-xl border-b border-transparent" id="navbar">
         <div class="max-w-7xl mx-auto px-6 md:px-8 h-24 flex items-center justify-between">
             <div class="flex items-center gap-4 cursor-pointer group">
-                <!-- Enlarged Navbar Logo -->
                 <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-10 md:h-12 w-auto transition-transform group-hover:scale-105 duration-500 object-contain drop-shadow-md">
             </div>
-            <div class="hidden sm:flex items-center gap-3 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+            <div class="beta-badge hidden sm:flex items-center gap-3 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-pointer">
                 <span class="relative flex h-2 w-2">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-light opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-light"></span>
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-neon"></span>
                 </span>
-                <div class="text-[10px] font-semibold text-gray-200 tracking-[0.2em] uppercase">
+                <div class="text-[10px] font-bold text-gray-200 tracking-[0.2em] uppercase drop-shadow-[0_0_5px_rgba(192,38,211,0.5)] relative z-10">
                     Beta Version 2.0
                 </div>
             </div>
@@ -664,37 +879,56 @@
     <!-- Main Content -->
     <main class="relative z-10 w-full flex flex-col items-center">
 
-        <!-- 2. HERO SECTION -->
-        <section class="min-h-[95vh] flex flex-col justify-center items-center px-4 md:px-6 relative w-full max-w-6xl mx-auto">
-            <div class="text-center w-full mt-24">
+        <!-- 2. HERO SECTION WITH DRAGGABLE 3D GLOBE EFFECT -->
+        <section class="hero-entrance min-h-[95vh] flex flex-col justify-center items-center px-4 md:px-6 relative w-full max-w-6xl mx-auto overflow-visible">
+            
+            <!-- Hero Interactive 3D Background Elements (The Draggable Globe) -->
+            <div id="hero-interactive-wrapper" title="Drag to rotate">
+                <div id="hero-bg-container">
+                    <!-- Center Orb -->
+                    <div class="hero-bg-orb"></div>
+                    <!-- 3D Rings to form a Globe shape -->
+                    <div class="hero-bg-ring ring-equator"></div>
+                    <div class="hero-bg-ring ring-meridian-1"></div>
+                    <div class="hero-bg-ring ring-meridian-2"></div>
+                    <div class="hero-bg-ring ring-meridian-3"></div>
+                    
+                    <!-- Floating Glass Shards -->
+                    <div class="glass-shard shard-1 hidden md:block"></div>
+                    <div class="glass-shard shard-2 hidden lg:block"></div>
+                    <div class="glass-shard shard-3 hidden md:block"></div>
+                </div>
+            </div>
+
+            <!-- Static Foreground Text (Pointer-events none on wrapper to allow background drag) -->
+            <div class="relative z-20 text-center w-full mt-24 pointer-events-none">
                 
-                <!-- #1 ON YT JOBS Premium Shining Badge -->
-                <a href="https://ytjobs.co/talent/profile/290250" target="_blank" rel="noopener noreferrer" class="shine-badge inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 backdrop-blur-md text-gray-200 text-[10px] sm:text-xs font-inter font-bold mb-8 tracking-[0.2em] uppercase reveal-up cursor-pointer" style="transition-delay: 0.05s;">
-                    <div class="bg-black/50 rounded-full absolute inset-[1px] z-[-1]"></div>
-                    <i data-lucide="trophy" class="w-4 h-4 text-brand-neon"></i>
+                <a href="https://ytjobs.co/talent/profile/290250" target="_blank" rel="noopener noreferrer" class="shine-badge inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/5 backdrop-blur-md text-white text-[10px] sm:text-xs font-inter font-bold mb-8 tracking-[0.25em] uppercase cursor-pointer relative z-20 pointer-events-auto">
+                    <div class="bg-black/60 rounded-full absolute inset-[1px] z-[-1]"></div>
+                    <i data-lucide="trophy" class="w-4 h-4 text-brand-neon drop-shadow-[0_0_8px_#c026d3]"></i>
                     <span>#1 ON YT JOBS</span>
                 </a>
 
-                <h1 class="font-editorial text-5xl md:text-7xl lg:text-[7.5rem] tracking-tight leading-[1.05] mb-8 relative">
-                    <div class="reveal-up" style="transition-delay: 0.1s;">The new standard in</div>
-                    <div class="reveal-up pb-4" style="transition-delay: 0.2s;">
-                        <span class="text-italic-premium">post</span> 
-                        <span class="text-gradient">production.</span>
+                <h1 class="font-editorial text-5xl md:text-7xl lg:text-[8rem] tracking-tight leading-[1.05] mb-8 relative">
+                    <div class="drop-shadow-2xl">The new standard in</div>
+                    <div class="pb-6">
+                        <span class="text-italic-premium">media</span> 
+                        <span class="text-gradient drop-shadow-[0_10px_30px_rgba(192,38,211,0.4)]">production.</span>
                     </div>
                 </h1>
 
-                <p class="text-base md:text-xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed mb-16 reveal-up" style="transition-delay: 0.4s;">
-                    Elevate your entire creative pipeline. Aktivus delivers an end-to-end post-production ecosystem designed to bridge the gap between freelancers, clients, and masterpiece delivery.
+                <p class="text-base md:text-xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed mb-16 drop-shadow-md">
+                    Elevate your brand's narrative. Aktivus delivers an elite, in-house media production ecosystem, offering premium clients a seamless experience from initial concept to final masterpiece delivery.
                 </p>
 
                 <!-- Functional Premium Waitlist Form -->
-                <div class="max-w-xl mx-auto w-full reveal-up" style="transition-delay: 0.6s;">
-                    <form id="waitlist-form" class="unified-form flex flex-col sm:flex-row items-center p-2 rounded-3xl sm:rounded-full backdrop-blur-md w-full shadow-2xl">
+                <div class="max-w-xl mx-auto w-full relative z-30 pointer-events-auto">
+                    <form id="waitlist-form" class="unified-form flex flex-col sm:flex-row items-center p-2 rounded-3xl sm:rounded-full backdrop-blur-xl w-full shadow-2xl">
                         <div class="w-full relative flex-1">
-                            <i data-lucide="mail" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                            <i data-lucide="mail" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
                             <input type="email" id="email-input" placeholder="Enter your email address..." required class="w-full bg-transparent text-white placeholder-gray-500 pl-12 pr-4 py-4 sm:py-3 focus:outline-none font-inter text-sm md:text-base">
                         </div>
-                        <button type="submit" id="magnetic-btn" class="magnetic-btn w-full sm:w-auto font-inter text-sm font-semibold tracking-wide bg-white text-brand-950 px-8 py-4 sm:py-3 rounded-2xl sm:rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] mt-2 sm:mt-0 flex-shrink-0">
+                        <button type="submit" id="magnetic-btn" class="magnetic-btn w-full sm:w-auto font-inter text-sm font-bold tracking-widest uppercase bg-white text-brand-950 px-8 py-4 sm:py-3 rounded-2xl sm:rounded-full transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(192,38,211,0.5)] mt-2 sm:mt-0 flex-shrink-0">
                             <span id="btn-text" class="flex items-center gap-2">Request Access</span>
                         </button>
                     </form>
@@ -702,98 +936,93 @@
             </div>
         </section>
 
-        <!-- 4. PROFESSIONAL COUNTDOWN & POST-PRODUCTION UI -->
-        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <!-- 4. PROFESSIONAL COUNTDOWN & INTERACTIVE PRODUCTION UI -->
+        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto mt-20">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
                 
-                <!-- Sleek Minimal Countdown Panel & Post-Prod UI -->
-                <div id="interactive-card" class="premium-card p-8 md:p-12 lg:col-span-3 flex flex-col justify-between reveal-3d interactive-3d-card" style="transition-delay: 0.1s;">
+                <div id="interactive-card" class="premium-card p-8 md:p-12 lg:col-span-3 flex flex-col justify-between reveal-3d interactive-3d-card border-brand/30 shadow-[0_0_50px_rgba(124,58,237,0.1)]" style="transition-delay: 0.1s;">
                     
                     <div class="mb-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div>
-                            <h3 class="font-editorial text-2xl text-white mb-1">Production Platform Unlocks</h3>
-                            <p class="text-[11px] uppercase tracking-widest text-gray-500 font-inter font-medium">Global Release Schedule</p>
+                            <h3 class="font-editorial text-3xl text-white mb-1 drop-shadow-md">Production Platform Unlocks</h3>
+                            <p class="text-[11px] uppercase tracking-widest text-brand-light font-inter font-bold">Global Release Schedule</p>
                         </div>
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 shadow-inner">
-                            <span class="w-2 h-2 rounded-full bg-brand-neon animate-pulse shadow-[0_0_8px_#c026d3]"></span>
-                            <span class="text-[10px] uppercase tracking-widest text-gray-200 font-semibold">Systems Nominal</span>
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/20 shadow-inner">
+                            <span class="w-2 h-2 rounded-full bg-brand-neon animate-pulse shadow-[0_0_10px_#c026d3]"></span>
+                            <span class="text-[10px] uppercase tracking-widest text-white font-bold">Systems Nominal</span>
                         </div>
                     </div>
 
-                    <!-- Refined Glass Timer -->
                     <div id="countdown" class="flex items-center justify-center sm:justify-start gap-3 sm:gap-4 w-full mb-16">
                         <div class="pro-timer-card">
-                            <div id="days" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mt-2 font-bold">Days</div>
+                            <div id="days" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight drop-shadow-lg" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Days</div>
                         </div>
                         <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
                         <div class="pro-timer-card">
-                            <div id="hours" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mt-2 font-bold">Hours</div>
+                            <div id="hours" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight drop-shadow-lg" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Hours</div>
                         </div>
                         <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
                         <div class="pro-timer-card">
-                            <div id="minutes" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mt-2 font-bold">Mins</div>
+                            <div id="minutes" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight drop-shadow-lg" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Mins</div>
                         </div>
                         <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
-                        <div class="pro-timer-card border-brand-neon/40 bg-brand-neon/10 shadow-[0_0_40px_rgba(192,38,211,0.15)] transform hover:-translate-y-1 transition-transform">
+                        <div class="pro-timer-card border-brand-neon/50 bg-brand-neon/20 shadow-[0_0_50px_rgba(192,38,211,0.25)] transform hover:-translate-y-2 transition-transform cursor-pointer">
                             <div id="seconds" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight text-shadow-sm" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[10px] uppercase tracking-[0.2em] text-brand-neon mt-2 font-bold drop-shadow-[0_0_5px_#c026d3]">Secs</div>
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-brand-neon mt-2 font-bold drop-shadow-[0_0_8px_#c026d3]">Secs</div>
                         </div>
                     </div>
 
-                    <!-- Extreme 3D Post-Production NLE UI -->
+                    <!-- Interactive 3D Post-Production NLE UI -->
                     <div class="interactive-3d-wrapper w-full">
-                        <div class="pro-nle-container">
-                            <!-- Header with Post-Prod Tabs -->
+                        <div class="pro-nle-container shadow-2xl">
+                            <!-- Header -->
                             <div class="pro-nle-header">
-                                <div class="mac-dot mac-close"></div>
-                                <div class="mac-dot mac-min"></div>
-                                <div class="mac-dot mac-max"></div>
+                                <div class="mac-dot mac-close hover:bg-red-400"></div>
+                                <div class="mac-dot mac-min hover:bg-yellow-400"></div>
+                                <div class="mac-dot mac-max hover:bg-green-400"></div>
                                 
-                                <div class="pro-nle-tabs hidden sm:flex">
+                                <div class="pro-nle-tabs hidden sm:flex" id="nle-tabs">
                                     <span class="nle-tab">INGEST</span>
-                                    <span class="nle-tab">EDIT</span>
+                                    <span class="nle-tab active">EDIT</span>
                                     <span class="nle-tab">VFX</span>
-                                    <span class="nle-tab active">COLOR</span>
+                                    <span class="nle-tab">COLOR</span>
                                     <span class="nle-tab">AUDIO</span>
                                     <span class="nle-tab">DELIVER</span>
                                 </div>
 
                                 <div class="ml-auto flex items-center gap-3">
-                                    <span class="text-[8px] uppercase tracking-[0.2em] text-success font-bold animate-pulse">PRODUCTION ENGINE // ONLINE</span>
+                                    <span class="text-[8px] uppercase tracking-[0.2em] text-success font-bold animate-pulse drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]">PROD ENGINE // ONLINE</span>
                                 </div>
                             </div>
                             
                             <!-- Body Area -->
-                            <div class="pro-nle-body">
+                            <div class="pro-nle-body" id="nle-body">
                                 
-                                <!-- Production Viewport & Meters -->
                                 <div class="pro-nle-viewport-area">
-                                    <!-- Media Pool -->
                                     <div class="media-pool hidden sm:flex">
                                         <span class="text-[7px] text-gray-500 font-bold tracking-widest">MEDIA POOL</span>
-                                        <div class="media-item w-full"></div>
-                                        <div class="media-item w-[80%]"></div>
-                                        <div class="media-item w-[90%]"></div>
+                                        <div class="media-item w-full hover:bg-brand/20 nle-media-btn"></div>
+                                        <div class="media-item w-[80%] hover:bg-brand/20 nle-media-btn"></div>
+                                        <div class="media-item w-[90%] hover:bg-brand/20 nle-media-btn"></div>
                                     </div>
-                                    <!-- Viewer Screen -->
-                                    <div class="viewer">
-                                        <i data-lucide="play-circle" class="w-8 h-8 text-white/10"></i>
-                                        <div class="absolute top-2 right-2 flex items-center gap-1.5">
-                                            <div class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_5px_red]"></div>
-                                            <span class="text-[7px] text-red-500 font-bold tracking-widest">REC</span>
+                                    <div class="viewer group" id="nle-viewer">
+                                        <div class="play-btn-wrapper z-10" id="nle-play-btn">
+                                            <!-- SVG initialized later via Lucide -->
+                                        </div>
+                                        <div class="absolute top-2 right-2 flex items-center gap-1.5 z-10">
+                                            <div class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_red]" id="rec-light"></div>
+                                            <span class="text-[7px] text-red-500 font-bold tracking-widest drop-shadow-md">REC</span>
                                         </div>
                                     </div>
-                                    <!-- Audio VU Meters -->
                                     <div class="vu-meters">
-                                        <div class="vu-bar"></div>
-                                        <div class="vu-bar"></div>
+                                        <div class="vu-bar" id="vu-bar-1"></div>
+                                        <div class="vu-bar" id="vu-bar-2"></div>
                                     </div>
                                 </div>
 
-                                <!-- Timeline Area -->
                                 <div class="pro-nle-timeline" id="nle-workspace">
                                     <div class="absolute inset-y-0 left-0 right-10 pointer-events-none z-30">
                                         <div class="pro-playhead" id="main-playhead">
@@ -801,13 +1030,11 @@
                                         </div>
                                     </div>
 
-                                    <!-- Ruler with -14 DAYS Marker -->
                                     <div class="pro-nle-ruler ml-[60px]">
                                         <span class="pro-timecode" style="left: 10%;">01:00:00:00</span>
                                         <span class="pro-timecode" style="left: 30%;">01:00:15:00</span>
                                         <span class="pro-timecode" style="left: 50%;">01:00:30:00</span>
-                                        <!-- Added -14 Days Target Marker with Hours/Mins format requested -->
-                                        <span class="days-marker" style="left: 70%;">- 14D : 08H : 45M</span>
+                                        <span class="days-marker hover:scale-110 transition-transform" style="left: 70%;">- 14D : 08H : 45M</span>
                                         <span class="pro-timecode" style="left: 90%;">01:01:00:00</span>
                                     </div>
 
@@ -816,10 +1043,10 @@
                                             <span class="pro-track-name">V1</span>
                                         </div>
                                         <div class="pro-workspace">
-                                            <div class="pro-clip pro-clip-video" style="left: 5%; width: 40%;">
+                                            <div class="pro-clip pro-clip-video nle-clip-interactive" style="left: 5%; width: 40%;">
                                                 <span class="pro-clip-label">A001_C014.raw</span>
                                             </div>
-                                            <div class="pro-clip pro-clip-video" style="left: 48%; width: 30%; opacity: 0.9; box-shadow: 0 0 10px rgba(139,92,246,0.5); border-color: #a78bfa;">
+                                            <div class="pro-clip pro-clip-video nle-clip-interactive" style="left: 48%; width: 30%; opacity: 0.9; box-shadow: 0 0 10px rgba(139,92,246,0.5); border-color: #a78bfa;">
                                                 <span class="pro-clip-label">VFX_Comp_v2.exr</span>
                                             </div>
                                         </div>
@@ -830,10 +1057,10 @@
                                             <span class="pro-track-name">A1</span>
                                         </div>
                                         <div class="pro-workspace">
-                                            <div class="pro-clip pro-clip-audio" style="left: 5%; width: 40%;">
+                                            <div class="pro-clip pro-clip-audio nle-clip-interactive" style="left: 5%; width: 40%;">
                                                 <div class="pro-waveform"></div>
                                             </div>
-                                            <div class="pro-clip pro-clip-audio" style="left: 48%; width: 30%; opacity: 0.8;">
+                                            <div class="pro-clip pro-clip-audio nle-clip-interactive" style="left: 48%; width: 30%; opacity: 0.8;">
                                                 <div class="pro-waveform"></div>
                                             </div>
                                         </div>
@@ -844,14 +1071,13 @@
                     </div>
                 </div>
 
-                <!-- Unified Review Hub -->
-                <div class="premium-card p-10 lg:col-span-2 flex flex-col justify-center reveal-3d" style="transition-delay: 0.2s;">
-                    <div class="w-14 h-14 rounded-full bg-brand-900 border border-brand/40 flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(124,58,237,0.3)]">
-                        <i data-lucide="users" class="w-6 h-6 text-brand-light icon-pulse"></i>
+                <div class="premium-card p-10 lg:col-span-2 flex flex-col justify-center reveal-3d interactive-3d-card hover:border-brand-neon/50 hover:shadow-[0_0_40px_rgba(192,38,211,0.2)]" style="transition-delay: 0.2s;">
+                    <div class="w-14 h-14 rounded-full bg-brand-900 border border-brand-neon/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(192,38,211,0.4)]">
+                        <i data-lucide="users" class="w-6 h-6 text-brand-neon icon-pulse"></i>
                     </div>
-                    <h3 class="font-editorial text-3xl text-white mb-4">Unified Review Hub</h3>
-                    <p class="text-gray-400 text-sm font-light leading-relaxed">
-                        Eliminate scattered feedback. Frame-accurate annotations, version control, and real-time client approvals integrated directly into your timeline workspace.
+                    <h3 class="font-editorial text-4xl text-white mb-4 drop-shadow-md">Unified Review Hub</h3>
+                    <p class="text-gray-300 text-sm font-light leading-relaxed">
+                        Eliminate scattered feedback. Frame-accurate annotations, version control, and real-time client approvals integrated directly into your timeline workspace for seamless final delivery.
                     </p>
                 </div>
 
@@ -861,64 +1087,58 @@
         <!-- 5. EXTENDED SECTION: THE ECOSYSTEM WITH EXTREME ENERGY WIRE -->
         <section class="py-32 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto overflow-hidden">
             <div class="text-center mb-24 reveal-up">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-brand-neon mb-4 font-bold drop-shadow-[0_0_5px_#c026d3]">End-To-End Pipeline</p>
-                <h2 class="font-editorial text-4xl md:text-6xl text-white">The Aktivus Ecosystem</h2>
-                <p class="text-gray-400 mt-6 font-light text-lg max-w-2xl mx-auto">A seamless flow of creative energy. Every stage of production, unified in one highly optimized platform.</p>
+                <p class="text-[12px] uppercase tracking-[0.4em] text-brand-neon mb-4 font-bold drop-shadow-[0_0_8px_#c026d3]">End-To-End Pipeline</p>
+                <h2 class="font-editorial text-5xl md:text-7xl text-white drop-shadow-lg">The Aktivus Ecosystem</h2>
+                <p class="text-gray-300 mt-6 font-light text-xl max-w-3xl mx-auto">A seamless flow of creative energy. Every stage of production, unified in one highly optimized, cloud-native platform.</p>
             </div>
 
             <div class="relative w-full py-6">
-                <!-- Glowing Energy Plasma Wire connecting the cards -->
+                <!-- Glowing Energy Plasma Wire -->
                 <div class="energy-wire-container hidden md:block">
                     <div class="energy-beam"></div>
                     <div class="energy-beam energy-beam-2"></div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
-                    
-                    <!-- Stage 1 -->
-                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d" style="transition-delay: 0.1s;">
-                        <div class="w-16 h-16 rounded-full bg-[#0a0216] border border-white/20 mb-6 flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.1)] relative z-10">
-                            <i data-lucide="book-open" class="w-6 h-6 text-white icon-pulse"></i>
+                    <div class="premium-card p-10 flex flex-col items-center text-center reveal-3d interactive-3d-card hover:shadow-[0_20px_50px_rgba(255,255,255,0.1)] group" style="transition-delay: 0.1s;">
+                        <div class="w-20 h-20 rounded-full bg-[#0a0216] border border-white/20 mb-8 flex items-center justify-center shadow-[0_0_40px_rgba(255,255,255,0.15)] relative z-10 group-hover:scale-110 transition-transform">
+                            <i data-lucide="book-open" class="w-8 h-8 text-white icon-pulse"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-3">1. Pre-Production</h3>
-                        <p class="text-gray-400 text-xs font-light leading-relaxed">
-                            Dynamic scripting, storyboarding, and smart scheduling tools synchronized instantly.
+                        <h3 class="font-editorial text-2xl text-white mb-4 group-hover:text-brand-light transition-colors">1. Pre-Production</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">
+                            Dynamic scripting, interactive storyboarding, and smart scheduling tools synchronized instantly.
                         </p>
                     </div>
 
-                    <!-- Stage 2 -->
-                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d" style="transition-delay: 0.2s;">
-                        <div class="w-16 h-16 rounded-full bg-[#0a0216] border border-brand/50 mb-6 flex items-center justify-center shadow-[0_0_30px_rgba(124,58,237,0.4)] relative z-10">
-                            <i data-lucide="video" class="w-6 h-6 text-brand-light icon-pulse"></i>
+                    <div class="premium-card p-10 flex flex-col items-center text-center reveal-3d interactive-3d-card hover:shadow-[0_20px_50px_rgba(124,58,237,0.3)] hover:border-brand/60 group" style="transition-delay: 0.2s;">
+                        <div class="w-20 h-20 rounded-full bg-[#0a0216] border border-brand/60 mb-8 flex items-center justify-center shadow-[0_0_40px_rgba(124,58,237,0.5)] relative z-10 group-hover:scale-110 transition-transform">
+                            <i data-lucide="video" class="w-8 h-8 text-brand-light icon-pulse"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-3">2. Production</h3>
-                        <p class="text-gray-400 text-xs font-light leading-relaxed">
-                            Secure cloud asset management and instant dailies sync directly from the camera.
+                        <h3 class="font-editorial text-2xl text-white mb-4 group-hover:text-brand-light transition-colors">2. Production</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">
+                            Secure cloud asset management and instant proxy generation synced directly from the camera.
                         </p>
                     </div>
 
-                    <!-- Stage 3 -->
-                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d" style="transition-delay: 0.3s;">
-                        <div class="w-16 h-16 rounded-full bg-[#0a0216] border border-brand-neon/50 mb-6 flex items-center justify-center shadow-[0_0_30px_rgba(192,38,211,0.5)] relative z-10">
-                            <i data-lucide="scissors" class="w-6 h-6 text-brand-neon icon-pulse"></i>
+                    <div class="premium-card p-10 flex flex-col items-center text-center reveal-3d interactive-3d-card hover:shadow-[0_20px_50px_rgba(192,38,211,0.4)] hover:border-brand-neon/60 group" style="transition-delay: 0.3s;">
+                        <div class="w-20 h-20 rounded-full bg-[#0a0216] border border-brand-neon/60 mb-8 flex items-center justify-center shadow-[0_0_40px_rgba(192,38,211,0.6)] relative z-10 group-hover:scale-110 transition-transform">
+                            <i data-lucide="scissors" class="w-8 h-8 text-brand-neon icon-pulse"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-3">3. Post-Production</h3>
-                        <p class="text-gray-400 text-xs font-light leading-relaxed">
-                            Heavy VFX compositing, node-based color grading, and immersive audio mixing.
+                        <h3 class="font-editorial text-2xl text-white mb-4 group-hover:text-brand-neon transition-colors">3. Post-Production</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">
+                            Heavy VFX compositing, pro node-based color grading, and immersive 3D audio mixing.
                         </p>
                     </div>
 
-                    <!-- Stage 4 -->
-                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d" style="transition-delay: 0.4s;">
-                        <div class="w-16 h-16 rounded-full bg-[#0a0216] border border-success/50 mb-6 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.4)] relative z-10">
-                            <i data-lucide="send" class="w-6 h-6 text-success icon-pulse"></i>
+                    <div class="premium-card p-10 flex flex-col items-center text-center reveal-3d interactive-3d-card hover:shadow-[0_20px_50px_rgba(16,185,129,0.3)] hover:border-success/60 group" style="transition-delay: 0.4s;">
+                        <div class="w-20 h-20 rounded-full bg-[#0a0216] border border-success/60 mb-8 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.5)] relative z-10 group-hover:scale-110 transition-transform">
+                            <i data-lucide="send" class="w-8 h-8 text-success icon-pulse"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-3">4. Publishing</h3>
-                        <p class="text-gray-400 text-xs font-light leading-relaxed">
-                            Multi-platform delivery, one-click mastering, and direct client handoffs.
+                        <h3 class="font-editorial text-2xl text-white mb-4 group-hover:text-success transition-colors">4. Publishing</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">
+                            Multi-platform delivery formatting, one-click mastering, and direct client secure handoffs.
                         </p>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -930,24 +1150,20 @@
             </div>
             
             <div class="space-y-6">
-                <!-- Pre-Production Question -->
-                <div class="premium-card p-8 reveal-up" style="transition-delay: 0.1s;">
+                <div class="premium-card p-8 reveal-up hover:border-white/20 transition-colors" style="transition-delay: 0.1s;">
                     <h4 class="font-inter font-semibold text-white text-xl">How does Aktivus streamline pre-production planning?</h4>
                     <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Aktivus provides integrated moodboards, interactive script breakdowns, and smart scheduling tools that automatically sync with your production calendar, ensuring the entire crew is aligned before the camera even rolls.</p>
                 </div>
-                <!-- Production Question -->
-                <div class="premium-card p-8 reveal-up" style="transition-delay: 0.2s;">
+                <div class="premium-card p-8 reveal-up hover:border-brand/40 transition-colors" style="transition-delay: 0.2s;">
                     <h4 class="font-inter font-semibold text-white text-xl">Can we manage raw footage and dailies securely during production?</h4>
                     <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Yes. Our lightning-fast cloud asset manager allows you to upload dailies directly from the set. Editors can access lightweight proxies instantly, while heavy high-res RAW files sync securely in the background without bottlenecking your connection.</p>
                 </div>
-                <!-- Post-Production Question -->
-                <div class="premium-card p-8 reveal-up" style="transition-delay: 0.3s;">
+                <div class="premium-card p-8 reveal-up hover:border-brand-neon/40 transition-colors" style="transition-delay: 0.3s;">
                     <h4 class="font-inter font-semibold text-white text-xl">Does the post-production suite handle heavy VFX and color grading?</h4>
                     <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Absolutely. Aktivus features a true node-based compositing engine and professional HDR color wheels rivaling industry-standard studio software. All of this is powered by our distributed cloud rendering, so your local machine never lags.</p>
                 </div>
-                <!-- Overall Ecosystem Question -->
-                <div class="premium-card p-8 reveal-up" style="transition-delay: 0.4s;">
-                    <h4 class="font-inter font-semibold text-white text-xl">How does Aktivus solve freelancer-client friction?</h4>
+                <div class="premium-card p-8 reveal-up hover:border-success/40 transition-colors" style="transition-delay: 0.4s;">
+                    <h4 class="font-inter font-semibold text-white text-xl">How does Aktivus solve production friction?</h4>
                     <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">We provide a unified Review Hub where clients can leave frame-accurate visual annotations directly on the timeline. No more confusing email threads or messy timestamp notes—just seamless, real-time collaboration and one-click approvals.</p>
                 </div>
             </div>
@@ -955,17 +1171,16 @@
 
         <!-- Manifesto Quote (REVOLUTION) -->
         <section class="pb-32 pt-16 px-4 w-full max-w-6xl mx-auto">
-             <div class="premium-card p-12 md:p-20 flex flex-col items-center justify-center reveal-3d text-center border-brand/30 shadow-[0_0_80px_rgba(124,58,237,0.15)] relative overflow-visible">
-                <!-- Decorative Glows for the quote box -->
-                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-40 h-20 bg-brand-neon/20 blur-[50px] pointer-events-none"></div>
+             <div class="premium-card interactive-3d-card p-12 md:p-24 flex flex-col items-center justify-center reveal-3d text-center border-brand/40 shadow-[0_0_100px_rgba(124,58,237,0.2)] relative overflow-visible transform hover:scale-[1.02] transition-transform duration-700">
+                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-60 h-30 bg-brand-neon/20 blur-[60px] pointer-events-none"></div>
                 
-                <i data-lucide="sparkles" class="w-10 h-10 text-brand-light mb-10 drop-shadow-[0_0_10px_rgba(167,139,250,0.8)]"></i>
-                <p class="font-editorial text-3xl md:text-5xl text-white italic leading-tight max-w-4xl tracking-tight">
-                    "We built Aktivus to spark a revolution in the media and entertainment industry. We are breaking down the barriers between freelancers, agencies, and clients to provide a premium, unified ecosystem where true creativity thrives without friction."
+                <i data-lucide="sparkles" class="w-12 h-12 text-brand-light mb-10 drop-shadow-[0_0_15px_rgba(167,139,250,0.8)] animate-pulse"></i>
+                <p class="font-editorial text-3xl md:text-5xl text-white italic leading-tight max-w-4xl tracking-tight drop-shadow-lg">
+                    "We built Aktivus to spark a revolution in the media and entertainment industry. We are breaking down the barriers between production teams and clients to provide a premium, unified ecosystem where true creativity thrives without friction."
                 </p>
                 <div class="mt-14 flex flex-col items-center">
-                    <div class="w-16 h-[2px] bg-gradient-to-r from-transparent via-brand-neon to-transparent mb-6"></div>
-                    <p class="text-[12px] tracking-[0.4em] uppercase text-brand-light font-inter font-bold">The Aktivus Vision</p>
+                    <div class="w-20 h-[2px] bg-gradient-to-r from-transparent via-brand-neon to-transparent mb-6"></div>
+                    <p class="text-[12px] tracking-[0.5em] uppercase text-brand-light font-inter font-bold drop-shadow-[0_0_5px_rgba(167,139,250,0.5)]">The Aktivus Vision</p>
                 </div>
             </div>
         </section>
@@ -976,20 +1191,19 @@
     <footer class="border-t border-white/5 pt-16 pb-8 px-6 md:px-8 relative z-10 w-full bg-[#010002]">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div class="flex items-center gap-4">
-                <!-- Enlarged Footer Logo -->
-                <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-10 md:h-12 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity">
+                <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-10 md:h-12 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity cursor-pointer">
                 <div class="h-8 w-[1px] bg-white/10 hidden sm:block"></div>
                 <span class="text-gray-500 text-xs font-medium tracking-wider hidden sm:block">Aktivus Private Limited © 2026</span>
             </div>
             
             <div class="flex gap-8 text-gray-400">
-                <a href="https://x.com/Aktivuslimited" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-300" aria-label="X (Twitter)">
+                <a href="https://x.com/Aktivuslimited" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-125 hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] transition-all duration-300" aria-label="X (Twitter)">
                     <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
-                <a href="https://www.instagram.com/aktivus.in" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-300" aria-label="Instagram">
+                <a href="https://www.instagram.com/aktivus.in" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-125 hover:drop-shadow-[0_0_15px_rgba(192,38,211,0.8)] transition-all duration-300" aria-label="Instagram">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
-                <a href="https://discord.gg/wwAn2yMWx4" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-300" aria-label="Discord">
+                <a href="https://discord.gg/wwAn2yMWx4" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-125 hover:drop-shadow-[0_0_15px_rgba(124,58,237,0.8)] transition-all duration-300" aria-label="Discord">
                     <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
                 </a>
             </div>
@@ -999,7 +1213,7 @@
         
         <!-- Developed By Vedonyx Bar -->
         <div class="max-w-7xl mx-auto border-t border-white/5 pt-6 flex justify-center">
-            <p class="text-[10px] tracking-[0.4em] text-gray-600 uppercase font-inter hover:text-brand-light transition-colors duration-300 cursor-default">
+            <p class="text-[10px] tracking-[0.4em] text-gray-500 uppercase font-inter hover:text-brand-light hover:drop-shadow-[0_0_8px_rgba(167,139,250,0.5)] transition-all duration-300 cursor-default">
                 Developed by Vedonyx
             </p>
         </div>
@@ -1010,13 +1224,15 @@
         lucide.createIcons();
 
         // ---------------------------------
-        // LOADER ANIMATION LOGIC
+        // LOADER ANIMATION LOGIC (Fixed for Canvas Preview)
         // ---------------------------------
-        document.addEventListener("DOMContentLoaded", () => {
+        function initLoader() {
             let progress = 0;
             const percentageEl = document.getElementById("loader-percentage");
             const barEl = document.getElementById("loader-bar");
             const bodyEl = document.body;
+
+            if (!percentageEl || !barEl) return;
 
             const interval = setInterval(() => {
                 progress += Math.floor(Math.random() * 4) + 1; 
@@ -1030,7 +1246,7 @@
                     
                     setTimeout(() => {
                         bodyEl.classList.add("loaded");
-                        bodyEl.classList.remove("overflow-hidden");
+                        bodyEl.classList.remove("overflow-y-hidden", "overflow-hidden");
                         setTimeout(initScrollReveals, 500); 
                     }, 800);
                 } else {
@@ -1038,24 +1254,116 @@
                     barEl.style.width = progress + "%";
                 }
             }, 30);
-        });
+        }
+
+        // Run immediately to avoid DOMContentLoaded issues in iframes
+        initLoader();
 
         // ---------------------------------
-        // DYNAMIC MOUSE GLOW & CARD HOVER
+        // DRAGGABLE 3D GLOBE PHYSICS (Optimized for Zero Lag)
+        // ---------------------------------
+        const heroWrapper = document.getElementById('hero-interactive-wrapper');
+        const heroBgContainer = document.getElementById('hero-bg-container');
+        
+        let isDragging = false;
+        let startX = 0, startY = 0;
+        let curRotX = 15, curRotY = 45; 
+        let velX = 0, velY = 0;
+        const friction = 0.96; 
+
+        if (heroWrapper && heroBgContainer) {
+            heroWrapper.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                heroWrapper.style.cursor = 'grabbing';
+            });
+            
+            heroWrapper.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, {passive: false});
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                heroWrapper.style.cursor = 'grab';
+            });
+            window.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+                
+                velX = deltaX * 0.5;
+                velY = deltaY * 0.5;
+                
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const deltaX = e.touches[0].clientX - startX;
+                const deltaY = e.touches[0].clientY - startY;
+                
+                velX = deltaX * 0.6;
+                velY = deltaY * 0.6;
+                
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, {passive: false});
+
+            function animateGlobe() {
+                if (!isDragging) {
+                    curRotX -= velY;
+                    curRotY += velX;
+                    velX *= friction;
+                    velY *= friction;
+                    
+                    if (Math.abs(velX) < 0.1 && Math.abs(velY) < 0.1) {
+                        curRotY += 0.15;
+                    }
+                } else {
+                    curRotX -= velY;
+                    curRotY += velX;
+                    velX = 0; velY = 0; 
+                }
+
+                // Clamp vertical rotation
+                curRotX = Math.max(-85, Math.min(85, curRotX));
+
+                // Using translate3d forces GPU hardware acceleration
+                heroBgContainer.style.transform = `translate3d(0,0,0) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
+                requestAnimationFrame(animateGlobe);
+            }
+            animateGlobe();
+        }
+
+        // ---------------------------------
+        // CARD HOVERS & GLOBAL MOUSE GLOW
         // ---------------------------------
         const cursorGlow = document.getElementById('cursor-glow');
         const cards = document.querySelectorAll('.premium-card');
-        const interactiveCard = document.getElementById('interactive-card');
+        const interactiveCards = document.querySelectorAll('.interactive-3d-card');
 
+        // Throttled mouse move for better performance
+        let isTicking = false;
         if (window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', (e) => {
-                // Global glow
-                requestAnimationFrame(() => {
-                    cursorGlow.style.top = `${e.clientY}px`;
-                    cursorGlow.style.left = `${e.clientX}px`;
-                });
+                if (!isTicking) {
+                    requestAnimationFrame(() => {
+                        if (cursorGlow) {
+                            cursorGlow.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+                        }
+                        isTicking = false;
+                    });
+                    isTicking = true;
+                }
 
-                // Card inner glow
                 cards.forEach(card => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
@@ -1065,27 +1373,93 @@
                 });
             });
 
-            // 3D Tilt effect on Timeline Card
-            if(interactiveCard) {
-                interactiveCard.addEventListener('mousemove', (e) => {
-                    const rect = interactiveCard.getBoundingClientRect();
+            // 3D Tilt effect on ALL Interactive Cards
+            interactiveCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
                     
-                    const rotateX = ((y - centerY) / centerY) * -4; // Max 4 deg
-                    const rotateY = ((x - centerX) / centerX) * 4;
+                    const rotateX = ((y - centerY) / centerY) * -3; 
+                    const rotateY = ((x - centerX) / centerX) * 3;
                     
-                    interactiveCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+                    card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
                 });
                 
-                interactiveCard.addEventListener('mouseleave', () => {
-                    interactiveCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1500px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
                 });
-            }
+            });
         }
+
+        // ---------------------------------
+        // WORKING NLE UI TABS & PLAY BUTTON
+        // ---------------------------------
+        const nleTabs = document.querySelectorAll('.nle-tab');
+        const nleBody = document.getElementById('nle-body');
+        
+        nleTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                nleTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                if(nleBody) {
+                    nleBody.classList.remove('flash-effect');
+                    void nleBody.offsetWidth; 
+                    nleBody.classList.add('flash-effect');
+                }
+            });
+        });
+
+        const mediaItems = document.querySelectorAll('.nle-media-btn');
+        mediaItems.forEach(item => {
+            item.addEventListener('click', () => {
+                mediaItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        const playBtn = document.getElementById('nle-play-btn');
+        const playhead = document.getElementById('main-playhead');
+        const recLight = document.getElementById('rec-light');
+        const vuBars = document.querySelectorAll('.vu-bar');
+        let isPlaying = true; 
+
+        if (playBtn) {
+            playBtn.innerHTML = '<i data-lucide="pause-circle" class="w-10 h-10 text-brand-neon transition-colors cursor-pointer drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"></i>';
+            lucide.createIcons();
+
+            playBtn.addEventListener('click', () => {
+                isPlaying = !isPlaying;
+                const icon = playBtn.querySelector('i');
+                if(isPlaying) {
+                    icon.setAttribute('data-lucide', 'pause-circle');
+                    icon.classList.add('text-brand-neon');
+                    icon.classList.remove('text-white/50');
+                    playhead.classList.remove('paused');
+                    recLight.style.animationPlayState = 'running';
+                    vuBars.forEach(b => b.classList.remove('paused'));
+                } else {
+                    icon.setAttribute('data-lucide', 'play-circle');
+                    icon.classList.add('text-white/50');
+                    icon.classList.remove('text-brand-neon');
+                    playhead.classList.add('paused');
+                    recLight.style.animationPlayState = 'paused';
+                    vuBars.forEach(b => b.classList.add('paused'));
+                }
+                lucide.createIcons();
+            });
+        }
+
+        const interactiveClips = document.querySelectorAll('.nle-clip-interactive');
+        interactiveClips.forEach(clip => {
+            clip.addEventListener('click', () => {
+                interactiveClips.forEach(c => c.classList.remove('active-clip'));
+                clip.classList.add('active-clip');
+            });
+        });
 
         // ---------------------------------
         // WORKING WAITLIST FORM LOGIC
@@ -1101,21 +1475,17 @@
                 
                 if(!emailInput.value) return;
 
-                // 1. Loading State
                 btnText.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Processing...`;
                 lucide.createIcons();
                 magneticBtn.style.pointerEvents = 'none';
 
-                // Simulate API Call (2 seconds delay)
                 setTimeout(() => {
-                    // 2. Success State
                     btnText.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Access Requested`;
                     magneticBtn.classList.add('btn-success');
                     emailInput.value = '';
                     emailInput.placeholder = 'You are on the list!';
                     lucide.createIcons();
                     
-                    // Reset back after 4 seconds
                     setTimeout(() => {
                         btnText.innerHTML = `Request Access`;
                         magneticBtn.classList.remove('btn-success');
@@ -1126,21 +1496,18 @@
             });
         }
 
-        // ---------------------------------
-        // MAGNETIC BUTTON EFFECT
-        // ---------------------------------
         if (window.matchMedia("(pointer: fine)").matches && magneticBtn) {
             magneticBtn.addEventListener('mousemove', (e) => {
                 const rect = magneticBtn.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
                 
-                magneticBtn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(1.02)`;
+                magneticBtn.style.transform = `translate3d(${x * 0.15}px, ${y * 0.15}px, 0) scale(1.02)`;
             });
 
             magneticBtn.addEventListener('mouseleave', () => {
                 if(!magneticBtn.classList.contains('btn-success')) {
-                    magneticBtn.style.transform = `translate(0px, 0px) scale(1)`;
+                    magneticBtn.style.transform = `translate3d(0px, 0px, 0) scale(1)`;
                 }
             });
         }
@@ -1187,7 +1554,6 @@
         // ---------------------------------
         // CREATIVE COUNTDOWN TIMER LOGIC
         // ---------------------------------
-        
         const countdownDate = new Date();
         countdownDate.setDate(countdownDate.getDate() + 14);
         countdownDate.setHours(countdownDate.getHours() + 8);
@@ -1215,10 +1581,7 @@
             if(daysEl) daysEl.innerText = days.toString().padStart(2, '0');
             if(hoursEl) hoursEl.innerText = hours.toString().padStart(2, '0');
             if(minutesEl) minutesEl.innerText = minutes.toString().padStart(2, '0');
-            
-            if(secondsEl) {
-                secondsEl.innerText = seconds.toString().padStart(2, '0');
-            }
+            if(secondsEl) secondsEl.innerText = seconds.toString().padStart(2, '0');
         }
         
         const countdownInterval = setInterval(updateCountdown, 1000);
