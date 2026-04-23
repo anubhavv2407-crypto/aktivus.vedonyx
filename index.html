@@ -26,9 +26,9 @@
                     },
                     colors: {
                         brand: {
-                            950: '#010003', /* Extreme Dark Void */
-                            900: '#0a011a',
-                            800: '#13022b', /* Deep Space Purple */
+                            950: '#000000', 
+                            900: '#05010a',
+                            800: '#0c0217', 
                             DEFAULT: '#8b5cf6',
                             light: '#c4b5fd',
                             neon: '#d946ef',
@@ -43,34 +43,35 @@
 
     <style>
         /* -------------------------
-           BASE RESET & EXTREME DARK PURPLE BACKGROUND
+           BASE RESET & EXTREME DARK BACKGROUND
            ------------------------- */
         body {
-            background-color: #010002;
-            /* Extremely dark and subtle purple gradients */
+            background-color: #000000;
             background-image: 
-                radial-gradient(circle at 20vw 20vh, rgba(107, 33, 168, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 80vw 80vh, rgba(147, 51, 234, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 0%, #0a0117 0%, transparent 70%);
+                radial-gradient(circle at 15vw 15vh, rgba(139, 92, 246, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 85vw 85vh, rgba(217, 70, 239, 0.03) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 0%, rgba(12, 2, 23, 0.8) 0%, transparent 70%);
             color: #ffffff;
             overflow-x: hidden;
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #010002; border-left: 1px solid rgba(255,255,255,0.02); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000000; }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #3b0764, #701a75); 
+            background: rgba(139, 92, 246, 0.3); 
             border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.05);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.6); 
         }
 
         /* -------------------------
            PREMIUM LOADER
            ------------------------- */
         #premium-loader {
-            position: fixed; inset: 0; background-color: #010002; z-index: 9999;
+            position: fixed; inset: 0; background-color: #000000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
             will-change: transform, opacity;
@@ -79,18 +80,17 @@
             font-size: 6rem; font-weight: 400; line-height: 1;
             background: linear-gradient(135deg, #ffffff 0%, #d946ef 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 24px;
-            text-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
         }
-        .loader-bar-container { width: 240px; height: 1px; background: rgba(255, 255, 255, 0.05); position: relative; overflow: hidden; }
-        #loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #9333ea; transition: width 0.1s linear; box-shadow: 0 0 10px rgba(147,51,234,0.5); }
+        .loader-bar-container { width: 240px; height: 1px; background: rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; }
+        #loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #9333ea; transition: width 0.1s linear; }
         body.loaded #premium-loader { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
         /* -------------------------
-           DYNAMIC MOUSE GLOW (Softened)
+           DYNAMIC MOUSE GLOW
            ------------------------- */
         .cursor-glow {
             position: fixed; top: 0; left: 0; width: 600px; height: 600px;
-            background: radial-gradient(circle closest-side, rgba(167, 139, 250, 0.03), transparent);
+            background: radial-gradient(circle closest-side, rgba(139, 92, 246, 0.03), transparent);
             border-radius: 50%; pointer-events: none; z-index: -1;
             will-change: transform; transform: translate3d(-500px, -500px, 0); 
         }
@@ -103,7 +103,7 @@
             will-change: transform, opacity;
         }
         @keyframes hero3DEnter {
-            0% { opacity: 0; transform: scale(1.05) translateY(20px); }
+            0% { opacity: 0; transform: scale(1.02) translateY(15px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
@@ -111,49 +111,48 @@
            ELEGANT TYPOGRAPHY
            ------------------------- */
         .text-italic-premium {
-            font-style: italic; font-weight: 400; color: #e9d5ff;
-            text-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+            font-style: italic; font-weight: 400; color: #d8b4fe;
             display: inline-block; padding-bottom: 0.1em;
         }
         .text-gradient {
-            background: linear-gradient(135deg, #ffffff 0%, #f0abfc 50%, #d946ef 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #e879f9 50%, #c026d3 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text; display: inline-block; padding-bottom: 0.2em; margin-bottom: -0.2em;
-            filter: drop-shadow(0 5px 15px rgba(217, 70, 239, 0.2));
         }
 
         /* -------------------------
            PREMIUM SHINE BADGES
            ------------------------- */
         .shine-badge {
-            position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.1), inset 0 0 10px rgba(255,255,255,0.03);
-            border: 1px solid rgba(139, 92, 246, 0.2); pointer-events: auto; 
+            position: relative; overflow: hidden; transition: transform 0.3s ease, border-color 0.3s ease;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08); pointer-events: auto; 
             will-change: transform;
+            backdrop-filter: blur(10px);
         }
         .shine-badge::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
             transform: skewX(-20deg); animation: shineSweep 3s infinite;
             will-change: left;
         }
-        .shine-badge:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.4); }
+        .shine-badge:hover { transform: scale(1.02) translateY(-2px); border-color: rgba(139, 92, 246, 0.4); }
         @keyframes shineSweep { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
         /* -------------------------
-           PREMIUM CARDS (Extremely Dark & Sleek)
+           PREMIUM CARDS (Ultra Sleek)
            ------------------------- */
         .premium-card {
-            background: rgba(5, 1, 10, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            background: rgba(8, 2, 14, 0.7); border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 16px;
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border-color 0.4s ease;
             position: relative; overflow: hidden;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             will-change: transform;
         }
         .premium-card:hover {
-            transform: translateY(-4px); border-color: rgba(139, 92, 246, 0.25);
-            box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.1), inset 0 0 20px rgba(0,0,0,0.8);
+            transform: translateY(-4px); border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 15px 40px -10px rgba(139, 92, 246, 0.2), 0 20px 40px rgba(0,0,0,0.9);
             z-index: 10;
         }
         .interactive-3d-card { transform-style: preserve-3d; transform: perspective(1500px); transition: transform 0.1s ease-out; will-change: transform; }
@@ -161,70 +160,168 @@
         .icon-pulse { animation: iconGlow 3s infinite alternate ease-in-out; }
         @keyframes iconGlow {
             0% { filter: drop-shadow(0 0 2px currentColor); transform: scale(1); }
-            100% { filter: drop-shadow(0 0 10px currentColor); transform: scale(1.05); }
+            100% { filter: drop-shadow(0 0 12px currentColor); transform: scale(1.1); }
         }
 
         /* -------------------------
-           PRO TIMER (Sleek Dark)
+           PRO TIMER
            ------------------------- */
         .pro-timer-card {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 12px; padding: 16px 12px; min-width: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(8px); box-shadow: inset 0 0 10px rgba(0,0,0,0.3); transition: all 0.3s ease;
+            background: transparent; border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px; padding: 12px 8px; min-width: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
         }
-        @media (min-width: 640px) { .pro-timer-card { min-width: 90px; padding: 20px 16px; } }
-        .pro-timer-card:hover { border-color: rgba(255, 255, 255, 0.08); transform: translateY(-2px); box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 8px 20px -10px rgba(139,92,246,0.1); }
+        @media (min-width: 640px) { .pro-timer-card { min-width: 80px; padding: 16px 12px; } }
+        .pro-timer-card:hover { border-color: rgba(255, 255, 255, 0.15); transform: translateY(-2px); background: rgba(255,255,255,0.02); }
 
         /* -------------------------
            UI CONTAINER (NLE)
            ------------------------- */
         .pro-nle-container {
-            width: 100%; background: #020005; border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.1);
-            overflow: hidden; box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 1), 0 0 0 1px rgba(0,0,0,1); display: flex; flex-direction: column;
-            transform: rotateX(3deg) translateZ(15px); transform-origin: bottom center; transition: transform 0.4s ease-out; will-change: transform;
+            width: 100%; background: #040108; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden; box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 1), 0 0 0 1px rgba(0,0,0,0.5); display: flex; flex-direction: column;
+            transform: rotateX(2deg) translateZ(10px); transform-origin: bottom center; transition: transform 0.4s ease-out; will-change: transform;
         }
-        .pro-nle-container:hover { transform: rotateX(0deg) translateZ(25px); box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 1), 0 0 0 1px rgba(0,0,0,1), 0 15px 40px rgba(139,92,246,0.1); }
-        .pro-nle-header { height: 32px; background: #06010d; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; padding: 0 16px; gap: 8px; }
-        .mac-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); cursor:pointer;}
-        .mac-dot:hover{filter:brightness(1.5);}
+        .pro-nle-container:hover { transform: rotateX(0deg) translateZ(15px); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 1); border-color: rgba(255,255,255,0.15); }
+        .pro-nle-header { height: 36px; background: #080210; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; padding: 0 16px; gap: 8px; }
+        .mac-dot { width: 10px; height: 10px; border-radius: 50%; opacity: 0.8; }
         .mac-close { background: #ed6a5e; } .mac-min { background: #f4bf4f; } .mac-max { background: #61c554; }
-        .nle-tab { font-size: 9px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; cursor: pointer; position: relative; transition: color 0.2s;}
-        .nle-tab:hover {color:#fff;}
-        .nle-tab.active { color: #fff; text-shadow: 0 0 10px rgba(217,70,239,0.5);} 
-        .nle-tab.active::after { content: ''; position: absolute; bottom: -13px; left: 0; width: 100%; height: 2px; background: #9333ea; box-shadow: 0 -2px 10px #9333ea; }
         
-        .pro-nle-viewport-area { height: 100px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; }
-        .media-pool { width: 25%; border-right: 1px solid rgba(255,255,255,0.05); padding: 10px; display: flex; flex-direction: column; gap: 4px; background:#040008;}
-        .media-item { height: 20px; background: #0c011a; border-radius: 3px; border: 1px solid rgba(255,255,255,0.03); cursor:pointer; transition:background 0.2s;}
+        .pro-nle-tabs { display: flex; gap: 1rem; margin-left: 1.5rem; overflow-x: auto; scrollbar-width: none; }
+        .pro-nle-tabs::-webkit-scrollbar { display: none; }
+        .nle-tab { font-size: 9px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; cursor: pointer; position: relative; transition: color 0.2s; white-space: nowrap; padding: 4px 2px;}
+        .nle-tab:hover {color:#fff;}
+        .nle-tab.active { color: #fff; } 
+        .nle-tab.active::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 100%; height: 2px; background: #9333ea; }
+        
+        .pro-nle-viewport-area { height: 120px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; }
+        .media-pool { width: 25%; border-right: 1px solid rgba(255,255,255,0.05); padding: 10px; display: flex; flex-direction: column; gap: 6px; background:#020005;}
+        .media-item { height: 18px; background: #0c0217; border-radius: 4px; border: 1px solid rgba(255,255,255,0.03); cursor:pointer; transition:background 0.2s;}
         .media-item:hover {background:#14022b;} .media-item.active{background:#2e1065; border-color:#8b5cf6;}
-        .viewer { flex-grow: 1; background: #000; position: relative; display: flex; align-items: center; justify-content: center; cursor:pointer;}
-        .viewer:hover{box-shadow: inset 0 0 30px rgba(139,92,246,0.1);}
-        .viewer::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
-        .vu-meters { width: 15%; border-left: 1px solid rgba(255,255,255,0.05); padding: 10px; display: flex; align-items: flex-end; justify-content: center; gap: 4px; background: #040008; }
-        .vu-bar { width: 6px; height: 100%; background: linear-gradient(to top, #10b981 50%, #eab308 80%, #ef4444 100%); opacity: 0.8; position: relative; overflow: hidden; }
-        .vu-bar::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%; background: #040008; animation: vuBounce 0.5s infinite alternate; will-change: height; }
+        .viewer { flex-grow: 1; background: #000; position: relative; display: flex; align-items: center; justify-content: center; cursor:pointer; overflow: hidden;}
+        
+        .viewer::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 100%); pointer-events: none; }
+        .vu-meters { width: 15%; border-left: 1px solid rgba(255,255,255,0.05); padding: 10px; display: flex; align-items: flex-end; justify-content: center; gap: 4px; background: #020005; }
+        .vu-bar { width: 4px; height: 100%; background: linear-gradient(to top, #10b981 50%, #eab308 80%, #ef4444 100%); opacity: 0.7; position: relative; overflow: hidden; border-radius: 2px; }
+        .vu-bar::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%; background: #020005; animation: vuBounce 0.5s infinite alternate; will-change: height; }
         .vu-bar.paused::after { animation-play-state: paused; height:90%;}
-        @keyframes vuBounce { 0% { height: 80%; } 100% { height: 20%; } }
+        @keyframes vuBounce { 0% { height: 80%; } 100% { height: 10%; } }
 
-        .pro-nle-timeline { flex-grow: 1; display: flex; flex-direction: column; position: relative; height: 120px; background: #020005;}
-        .pro-nle-ruler { height: 26px; background: #040008; border-bottom: 1px solid rgba(255, 255, 255, 0.05); position: relative; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 4%); background-position: bottom; background-size: 100% 30%; background-repeat: no-repeat; }
-        .pro-timecode { position: absolute; bottom: 8px; font-family: 'Inter', monospace; font-size: 8px; color: rgba(255,255,255,0.3); transform: translateX(-50%); }
-        .days-marker { position: absolute; top: 2px; font-family: 'Inter', monospace; font-size: 9px; color: #ef4444; font-weight: bold; transform: translateX(-50%); background: rgba(239, 68, 68, 0.1); padding: 1px 4px; border-radius: 2px; border: 1px solid rgba(239, 68, 68, 0.2); box-shadow: 0 0 10px rgba(239,68,68,0.1); animation: pulseMarker 3s infinite; z-index: 40; cursor: pointer; transition:transform 0.2s;}
+        .pro-nle-timeline { flex-grow: 1; display: flex; flex-direction: column; position: relative; height: 100px; background: #000000;}
+        .pro-nle-ruler { height: 24px; background: #040108; border-bottom: 1px solid rgba(255, 255, 255, 0.05); position: relative; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 4%); background-position: bottom; background-size: 100% 20%; background-repeat: no-repeat; }
+        .pro-timecode { position: absolute; bottom: 6px; font-family: 'Inter', monospace; font-size: 8px; color: rgba(255,255,255,0.3); transform: translateX(-50%); }
+        .days-marker { position: absolute; top: 2px; font-family: 'Inter', monospace; font-size: 9px; color: #ef4444; font-weight: bold; transform: translateX(-50%); background: rgba(239, 68, 68, 0.1); padding: 1px 4px; border-radius: 2px; border: 1px solid rgba(239, 68, 68, 0.2); animation: pulseMarker 3s infinite; z-index: 40; cursor: pointer; transition:transform 0.2s;}
         .days-marker:hover{transform:translateX(-50%) scale(1.05); background:rgba(239,68,68,0.2);}
         @keyframes pulseMarker { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .pro-playhead { position: absolute; top: 0; bottom: 0; width: 1px; background: #fff; z-index: 30; box-shadow: 0 0 10px 1px rgba(167,139,250,0.4); animation: proSweep 8s linear infinite; will-change: left, transform; transform: translateZ(0); }
+        .pro-playhead { position: absolute; top: 0; bottom: 0; width: 1px; background: #fff; z-index: 30; box-shadow: 0 0 8px 1px rgba(217,70,239,0.4); animation: proSweep 8s linear infinite; will-change: left, transform; transform: translateZ(0); }
         .pro-playhead.paused {animation-play-state:paused;}
-        .pro-playhead-cap { position: absolute; top: 0; left: -4px; width: 9px; height: 8px; background: #ffffff; clip-path: polygon(0 0, 100% 0, 50% 100%); box-shadow:0 3px 10px rgba(167,139,250,0.3);}
-        .pro-track { flex-grow: 1; border-bottom: 1px solid rgba(255, 255, 255, 0.03); display: flex; position: relative; }
-        .pro-track-header { width: 60px; min-width: 60px; background: #06010d; border-right: 1px solid #000; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow:2px 0 5px rgba(0,0,0,0.5);}
+        .pro-playhead-cap { position: absolute; top: 0; left: -4px; width: 9px; height: 8px; background: #ffffff; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+        .pro-track { flex-grow: 1; border-bottom: 1px solid rgba(255, 255, 255, 0.02); display: flex; position: relative; }
+        .pro-track-header { width: 60px; min-width: 60px; background: #06010d; border-right: 1px solid #000; display: flex; align-items: center; justify-content: center; z-index: 10; }
         .pro-workspace { flex-grow: 1; position: relative; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.01) 0, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 10%); }
-        .pro-clip { position: absolute; top: 5px; bottom: 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); border-top: 2px solid; overflow: hidden; display: flex; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.5); cursor: pointer; transition:all 0.2s;}
+        .pro-clip { position: absolute; top: 4px; bottom: 4px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); border-top: 2px solid; overflow: hidden; display: flex; align-items: center; cursor: pointer; transition:all 0.2s;}
         .pro-clip:hover{filter:brightness(1.2); transform:scaleY(1.05); z-index:20;}
-        .pro-clip.active-clip{border-color:#fff; border-top-color:#fff; box-shadow:0 0 15px rgba(167,139,250,0.4); z-index:25; transform:scale(1.02, 1.1);}
-        .pro-clip-video { background: #261642; border-color: #552d94; border-top-color: #8b5cf6;}
-        .pro-clip-audio { background: #122830; border-color: #214e5e; border-top-color: #06b6d4; align-items: flex-end;}
-        .pro-waveform { width: 100%; height: 60%; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.2) 0, rgba(255,255,255,0.2) 1px, transparent 1px, transparent 3px); margin-bottom: 2px; opacity: 0.8; }
+        .pro-clip.active-clip{border-color:#fff; border-top-color:#fff; z-index:25;}
+        .pro-clip-video { background: #1e1131; border-color: #4c1d95; border-top-color: #8b5cf6;}
+        .pro-clip-audio { background: #081a24; border-color: #164e63; border-top-color: #06b6d4; align-items: flex-end;}
+        .pro-waveform { width: 100%; height: 60%; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 3px); margin-bottom: 2px; opacity: 0.8; }
         @keyframes proSweep { 0% { left: 0%; } 100% { left: 100%; } }
+
+        /* -------------------------
+           NEW EXTREME 3D ECOSYSTEM (WIRES & ANIMATIONS)
+           ------------------------- */
+        
+        /* 3D Holographic Grid Background to fill empty space */
+        .ecosystem-grid-bg {
+            position: absolute; inset: 0;
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(600px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 15s linear infinite;
+            opacity: 0.6;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes gridMove {
+            0% { transform: perspective(600px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(600px) rotateX(60deg) translateY(50px) translateZ(-200px); }
+        }
+
+        .ecosystem-wire-wrapper {
+            position: absolute; inset: 0; pointer-events: none; z-index: 5;
+        }
+
+        /* The SVG Wires - Thick and Glowing */
+        .data-flow-base {
+            fill: none;
+            stroke: rgba(139, 92, 246, 0.15);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Thick blurred layer for outer glow */
+        .data-flow-glow {
+            fill: none;
+            stroke: url(#wireGradient);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.4;
+            stroke-dasharray: 80 200;
+            will-change: stroke-dashoffset;
+        }
+
+        /* Bright core layer for intense energy */
+        .data-flow-core {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 80 200;
+            will-change: stroke-dashoffset;
+            filter: drop-shadow(0 0 8px rgba(217, 70, 239, 1));
+        }
+
+        /* Forward Animation (Pre/Post to Center to Bottom) */
+        .anim-forward-glow { animation: energyFlow 2.5s linear infinite; }
+        .anim-forward-core { animation: energyFlow 2.5s linear infinite; }
+        
+        /* Reverse Animation (If needed for opposite paths) */
+        .anim-reverse-glow { animation: energyFlowRev 2.5s linear infinite; }
+        .anim-reverse-core { animation: energyFlowRev 2.5s linear infinite; }
+
+        @keyframes energyFlow {
+            from { stroke-dashoffset: 280; }
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes energyFlowRev {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: 280; }
+        }
+
+        /* Pulsing HTML Nodes at junctions */
+        .junction-node {
+            position: absolute;
+            border-radius: 50%;
+            background: #fff;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px 5px #d946ef, 0 0 30px 10px #8b5cf6;
+            animation: nodePulse 2s infinite alternate ease-in-out;
+            z-index: 6;
+        }
+        .node-center { top: 21%; left: 50%; width: 12px; height: 12px; }
+        .node-left { top: 21%; left: 16.66%; width: 8px; height: 8px; }
+        .node-right { top: 21%; left: 83.33%; width: 8px; height: 8px; }
+        .node-bottom { top: 80%; left: 50%; width: 14px; height: 14px; background: #06b6d4; box-shadow: 0 0 15px 5px #06b6d4, 0 0 30px 10px #8b5cf6;}
+
+        @keyframes nodePulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+        }
 
         /* -------------------------
            ANIMATIONS & FORMS
@@ -233,10 +330,10 @@
         .reveal-3d { opacity: 0; transform: translateY(40px) rotateX(-5deg) scale(0.98); transform-origin: top center; transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
         .is-visible { opacity: 1 !important; transform: translateY(0) rotateX(0) scale(1) !important; }
 
-        .unified-form { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); transition: border-color 0.4s ease; pointer-events: auto; }
-        .unified-form:focus-within { border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 0 20px rgba(139, 92, 246, 0.15); background: rgba(255, 255, 255, 0.04); }
+        .unified-form { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); transition: border-color 0.4s ease; pointer-events: auto; }
+        .unified-form:focus-within { border-color: rgba(139, 92, 246, 0.4); background: rgba(255, 255, 255, 0.04); }
         .magnetic-btn { position: relative; overflow: hidden; display: inline-flex; justify-content: center; align-items: center; gap: 8px; will-change: transform; }
-        .magnetic-btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 50%); transform: translate(-50%, -50%) scale(0); transition: transform 0.5s ease; pointer-events: none; }
+        .magnetic-btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 50%); transform: translate(-50%, -50%) scale(0); transition: transform 0.5s ease; pointer-events: none; }
         .magnetic-btn:hover::before { transform: translate(-50%, -50%) scale(1); }
         .magnetic-btn:active { transform: scale(0.95) !important; }
     </style>
@@ -254,22 +351,22 @@
                 <div id="loader-bar"></div>
             </div>
             <div class="mt-8 text-[11px] tracking-[0.4em] text-white uppercase font-inter">Initializing Experience</div>
-            <div class="mt-3 text-[9px] tracking-[0.3em] text-gray-500 uppercase font-inter">A digital experience by Aktivus</div>
+            <div class="mt-3 text-[9px] tracking-[0.3em] text-gray-500 uppercase font-inter">Aktivus Pipeline Engine</div>
         </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 transition-all duration-500 backdrop-blur-xl border-b border-transparent" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 md:px-8 h-24 flex items-center justify-between">
+    <nav class="fixed top-0 w-full z-50 transition-all duration-500 backdrop-blur-md border-b border-transparent" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-4 cursor-pointer group">
-                <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-10 md:h-12 w-auto transition-transform group-hover:scale-105 duration-500 object-contain drop-shadow-md">
+                <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-8 md:h-10 w-auto transition-transform group-hover:scale-105 duration-500 object-contain opacity-90 hover:opacity-100">
             </div>
-            <div class="hidden sm:flex items-center gap-3 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-pointer hover:border-brand-neon/40 transition-colors">
-                <span class="relative flex h-2 w-2">
+            <div class="hidden sm:flex items-center gap-2 border border-white/10 px-4 py-1.5 rounded-full bg-white/5 cursor-default">
+                <span class="relative flex h-1.5 w-1.5">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-neon"></span>
+                  <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-neon"></span>
                 </span>
-                <div class="text-[10px] font-bold text-gray-200 tracking-[0.2em] uppercase drop-shadow-[0_0_5px_rgba(217,70,239,0.3)]">
+                <div class="text-[9px] font-bold text-gray-300 tracking-[0.2em] uppercase">
                     Beta Version 2.0
                 </div>
             </div>
@@ -280,36 +377,35 @@
     <main class="relative w-full flex flex-col items-center">
 
         <!-- 2. HERO SECTION (CLEAN, DARK, ELEGANT) -->
-        <section class="hero-entrance min-h-[95vh] flex flex-col justify-center items-center px-4 md:px-6 relative w-full overflow-hidden">
+        <section class="hero-entrance min-h-screen flex flex-col justify-center items-center px-4 md:px-6 relative w-full overflow-hidden">
             
             <!-- Foreground Text Content -->
-            <div class="relative z-20 text-center w-full mt-24 max-w-6xl mx-auto">
+            <div class="relative z-20 text-center w-full mt-10 max-w-5xl mx-auto">
                 
-                <a href="https://ytjobs.co/talent/profile/290250" target="_blank" rel="noopener noreferrer" class="shine-badge inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/5 backdrop-blur-md text-white text-[10px] sm:text-xs font-inter font-bold mb-8 tracking-[0.25em] uppercase cursor-pointer pointer-events-auto">
-                    <div class="bg-black/60 rounded-full absolute inset-[1px] z-[-1]"></div>
-                    <i data-lucide="trophy" class="w-4 h-4 text-brand-neon drop-shadow-[0_0_8px_#d946ef]"></i>
-                    <span>#1 ON YT JOBS</span>
+                <a href="https://ytjobs.co/talent/profile/290250" target="_blank" rel="noopener noreferrer" class="shine-badge inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 text-white text-[9px] sm:text-[10px] font-inter font-bold mb-8 tracking-[0.2em] uppercase cursor-pointer pointer-events-auto">
+                    <i data-lucide="trophy" class="w-3.5 h-3.5 text-brand-neon"></i>
+                    <span class="opacity-90">#1 Ranked Production Agency</span>
                 </a>
 
-                <h1 class="font-editorial text-5xl md:text-7xl lg:text-[8.5rem] tracking-tight leading-[1.05] mb-8 relative drop-shadow-xl">
-                    <div class="pb-2">The new standard in</div>
-                    <div class="pb-6">
+                <h1 class="font-editorial text-5xl md:text-7xl lg:text-[7.5rem] tracking-tight leading-[1.1] mb-6 relative">
+                    <div class="pb-1">The new standard in</div>
+                    <div class="pb-2">
                         <span class="text-italic-premium">media</span> 
                         <span class="text-gradient">production.</span>
                     </div>
                 </h1>
 
-                <p class="text-base md:text-xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed mb-16 drop-shadow-md">
-                    Seamlessly handle multi-cam ingest, heavy ACES color grading, and distributed cloud rendering. Aktivus is the elite, in-house production engine offering true frame-accurate delivery for premium clients.
+                <p class="text-sm md:text-lg text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-12">
+                    Ditch the fragmented workflows. Aktivus is an elite, all-in-one production engine built for high-end creators. From raw ingest to final master, experience true frame-accurate collaboration without the friction.
                 </p>
 
-                <div class="max-w-xl mx-auto w-full relative z-30 pointer-events-auto">
-                    <form id="waitlist-form" class="unified-form flex flex-col sm:flex-row items-center p-2 rounded-3xl sm:rounded-full backdrop-blur-xl w-full shadow-lg">
+                <div class="max-w-lg mx-auto w-full relative z-30 pointer-events-auto">
+                    <form id="waitlist-form" class="unified-form flex flex-col sm:flex-row items-center p-1.5 rounded-2xl sm:rounded-full w-full">
                         <div class="w-full relative flex-1">
-                            <i data-lucide="mail" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
-                            <input type="email" id="email-input" placeholder="Enter your business email..." required class="w-full bg-transparent text-white placeholder-gray-500 pl-12 pr-4 py-4 sm:py-3 focus:outline-none font-inter text-sm md:text-base">
+                            <i data-lucide="mail" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+                            <input type="email" id="email-input" placeholder="name@studio.com" required class="w-full bg-transparent text-white placeholder-gray-600 pl-11 pr-4 py-3 sm:py-2.5 focus:outline-none font-inter text-sm md:text-base">
                         </div>
-                        <button type="submit" id="magnetic-btn" class="magnetic-btn w-full sm:w-auto font-inter text-sm font-bold tracking-widest uppercase bg-white text-brand-950 px-8 py-4 sm:py-3 rounded-2xl sm:rounded-full transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] mt-2 sm:mt-0 flex-shrink-0">
+                        <button type="submit" id="magnetic-btn" class="magnetic-btn w-full sm:w-auto font-inter text-xs font-semibold tracking-wider bg-white text-black px-6 py-3 sm:py-2.5 rounded-xl sm:rounded-full transition-all mt-2 sm:mt-0 flex-shrink-0">
                             <span id="btn-text" class="flex items-center gap-2">Request Access</span>
                         </button>
                     </form>
@@ -318,43 +414,43 @@
         </section>
 
         <!-- 4. PROFESSIONAL COUNTDOWN & INTERACTIVE PRODUCTION UI -->
-        <section class="py-20 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto mt-10">
+        <section class="py-20 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 
                 <!-- Countdown Panel & Post-Prod UI -->
-                <div class="premium-card p-6 md:p-10 lg:col-span-3 flex flex-col justify-between reveal-3d interactive-3d-card">
+                <div class="premium-card p-6 md:p-8 lg:col-span-3 flex flex-col justify-between reveal-3d interactive-3d-card">
                     
-                    <div class="mb-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="mb-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h3 class="font-editorial text-2xl sm:text-3xl text-white mb-1 drop-shadow-sm">Core Infrastructure Unlocks</h3>
-                            <p class="text-[10px] uppercase tracking-widest text-brand-light font-inter font-bold">Global Release Schedule</p>
+                            <p class="text-[9px] uppercase tracking-widest text-gray-400 font-inter font-semibold">Global Release Schedule</p>
                         </div>
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 shadow-inner">
-                            <span class="w-2 h-2 rounded-full bg-brand-light animate-pulse shadow-[0_0_8px_#c4b5fd]"></span>
-                            <span class="text-[9px] uppercase tracking-widest text-white font-semibold">Systems Nominal</span>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5 shadow-inner">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-light animate-pulse shadow-[0_0_8px_#c4b5fd]"></span>
+                            <span class="text-[8px] uppercase tracking-widest text-gray-300 font-semibold">Systems Nominal</span>
                         </div>
                     </div>
 
                     <!-- 22 DAYS Dynamic Timer -->
-                    <div id="countdown" class="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 w-full mb-12">
+                    <div id="countdown" class="flex items-center justify-center sm:justify-start gap-2 w-full mb-10">
                         <div class="pro-timer-card">
-                            <div id="days" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-white tracking-tight drop-shadow-md" style="font-variant-numeric: tabular-nums;">22</div>
-                            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Days</div>
+                            <div id="days" class="font-editorial text-3xl sm:text-4xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">22</div>
+                            <div class="text-[8px] uppercase tracking-[0.2em] text-gray-500 mt-1 font-bold">Days</div>
                         </div>
-                        <div class="text-xl text-white/20 font-light hidden sm:block">:</div>
+                        <div class="text-lg text-white/10 font-light hidden sm:block">:</div>
                         <div class="pro-timer-card">
-                            <div id="hours" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-white tracking-tight drop-shadow-md" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Hours</div>
+                            <div id="hours" class="font-editorial text-3xl sm:text-4xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[8px] uppercase tracking-[0.2em] text-gray-500 mt-1 font-bold">Hours</div>
                         </div>
-                        <div class="text-xl text-white/20 font-light hidden sm:block">:</div>
+                        <div class="text-lg text-white/10 font-light hidden sm:block">:</div>
                         <div class="pro-timer-card">
-                            <div id="minutes" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-white tracking-tight drop-shadow-md" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Mins</div>
+                            <div id="minutes" class="font-editorial text-3xl sm:text-4xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[8px] uppercase tracking-[0.2em] text-gray-500 mt-1 font-bold">Mins</div>
                         </div>
-                        <div class="text-xl text-white/20 font-light hidden sm:block">:</div>
-                        <div class="pro-timer-card border-brand/30 bg-brand/5 shadow-[0_0_15px_rgba(139,92,246,0.1)]">
-                            <div id="seconds" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-brand-light mt-2 font-bold">Secs</div>
+                        <div class="text-lg text-white/10 font-light hidden sm:block">:</div>
+                        <div class="pro-timer-card border-brand/30 bg-brand/5">
+                            <div id="seconds" class="font-editorial text-3xl sm:text-4xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[8px] uppercase tracking-[0.2em] text-brand-light mt-1 font-bold">Secs</div>
                         </div>
                     </div>
 
@@ -374,26 +470,24 @@
                                     <span class="nle-tab">AUDIO</span>
                                     <span class="nle-tab">DELIVER</span>
                                 </div>
-                                <div class="ml-auto flex items-center gap-3">
-                                    <span class="text-[8px] uppercase tracking-[0.2em] text-cyan-400 font-bold animate-pulse">PROD ENGINE // ONLINE</span>
+                                <div class="ml-auto flex items-center gap-2">
+                                    <span class="text-[7px] uppercase tracking-widest text-cyan-500 font-semibold opacity-70">Cloud Node // Active</span>
                                 </div>
                             </div>
                             
                             <div class="pro-nle-body" id="nle-body">
                                 <div class="pro-nle-viewport-area">
                                     <div class="media-pool hidden sm:flex">
-                                        <span class="text-[7px] text-gray-500 font-bold tracking-widest">MEDIA POOL</span>
-                                        <div class="media-item w-full bg-brand-900 border-brand/30 nle-media-btn"></div>
-                                        <div class="media-item w-[80%] nle-media-btn"></div>
-                                        <div class="media-item w-[90%] nle-media-btn"></div>
+                                        <span class="text-[6px] text-gray-600 font-bold tracking-widest uppercase">Media Pool</span>
+                                        <div class="media-item w-full"></div>
+                                        <div class="media-item w-[80%]"></div>
+                                        <div class="media-item w-[90%]"></div>
                                     </div>
-                                    <div class="viewer group" id="nle-viewer" style="cursor:pointer;">
-                                        <div id="nle-play-btn" class="z-10 transition-transform duration-200 hover:scale-110">
-                                            <i data-lucide="pause-circle" class="w-10 h-10 text-brand-neon drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"></i>
-                                        </div>
+                                    <div class="viewer group" id="nle-play-btn" style="cursor:pointer;">
+                                        <!-- Play/Pause Icon injected by JS -->
                                         <div class="absolute top-2 right-2 flex items-center gap-1.5 z-10">
-                                            <div class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_4px_red]" id="rec-light"></div>
-                                            <span class="text-[7px] text-red-500 font-bold tracking-widest">REC</span>
+                                            <div class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse opacity-80" id="rec-light"></div>
+                                            <span class="text-[6px] text-red-500 font-bold tracking-widest">REC</span>
                                         </div>
                                     </div>
                                     <div class="vu-meters">
@@ -419,7 +513,7 @@
                                             <div class="pro-clip pro-clip-video nle-clip-interactive" style="left: 5%; width: 40%;">
                                                 <span class="pro-clip-label">A001_C014.ARRI</span>
                                             </div>
-                                            <div class="pro-clip pro-clip-video nle-clip-interactive active-clip" style="left: 48%; width: 30%; opacity: 0.9; border-color: #8b5cf6;">
+                                            <div class="pro-clip pro-clip-video nle-clip-interactive active-clip" style="left: 48%; width: 30%; border-color: #8b5cf6;">
                                                 <span class="pro-clip-label">VFX_Comp_v4.exr</span>
                                             </div>
                                         </div>
@@ -450,107 +544,159 @@
             </div>
         </section>
 
-        <!-- 5. EXTENDED SECTION: THE ECOSYSTEM -->
-        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto">
-            <div class="text-center mb-16 lg:mb-20 reveal-up">
-                <p class="text-[11px] uppercase tracking-[0.4em] text-brand-light mb-3 font-bold">End-To-End Pipeline</p>
-                <h2 class="font-editorial text-4xl md:text-6xl text-white drop-shadow-sm">The Aktivus Ecosystem</h2>
-                <p class="text-gray-400 mt-4 font-light text-lg max-w-2xl mx-auto">A seamless flow of creative energy. Every stage of production, unified in one highly optimized, cloud-native platform.</p>
+        <!-- 5. EXTENDED SECTION: THE ECOSYSTEM WITH TAGDA 3D WIRES -->
+        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto overflow-hidden">
+            <!-- 3D Grid Background -->
+            <div class="ecosystem-grid-bg"></div>
+
+            <div class="text-center mb-16 lg:mb-20 reveal-up relative z-20">
+                <p class="text-[10px] uppercase tracking-[0.3em] text-brand-light mb-3 font-semibold">End-To-End Pipeline</p>
+                <h2 class="font-editorial text-4xl md:text-6xl text-white">The Aktivus Ecosystem</h2>
+                <p class="text-gray-400 mt-4 font-light text-base max-w-2xl mx-auto">Built for speed and scale. Every phase of your pipeline, connected natively in the cloud.</p>
             </div>
 
-            <!-- T-Shape Layout for 4 Cards -->
+            <!-- T-Shape Layout for 4 Cards with Intense Energy Wires -->
             <div class="relative w-full py-4">
+
+                <!-- The "Gaand Faad" 3D Energy Wires -->
+                <div class="ecosystem-wire-wrapper hidden lg:block">
+                    <!-- Glowing HTML Junction Nodes -->
+                    <div class="junction-node node-left"></div>
+                    <div class="junction-node node-center"></div>
+                    <div class="junction-node node-right"></div>
+                    <div class="junction-node node-bottom"></div>
+
+                    <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 500">
+                        <defs>
+                            <linearGradient id="glowGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="rgba(139, 92, 246, 0.2)" />
+                                <stop offset="100%" stop-color="#d946ef" />
+                            </linearGradient>
+                            <linearGradient id="glowGradient2" x1="100%" y1="0%" x2="0%" y2="0%">
+                                <stop offset="0%" stop-color="rgba(139, 92, 246, 0.2)" />
+                                <stop offset="100%" stop-color="#d946ef" />
+                            </linearGradient>
+                            <linearGradient id="glowGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#d946ef" />
+                                <stop offset="100%" stop-color="#06b6d4" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Thick Background Track -->
+                        <g stroke="rgba(255, 255, 255, 0.05)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                            <path d="M 166 105 L 500 105" />
+                            <path d="M 833 105 L 500 105" />
+                            <path d="M 500 105 L 500 400" />
+                            <path d="M 166 105 Q 166 250 500 400" />
+                            <path d="M 833 105 Q 833 250 500 400" />
+                        </g>
+
+                        <!-- Blurred Purple Aura -->
+                        <g stroke="rgba(139, 92, 246, 0.4)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                            <path d="M 166 105 L 500 105" class="data-flow-glow anim-forward-glow" />
+                            <path d="M 833 105 L 500 105" class="data-flow-glow anim-reverse-glow" />
+                            <path d="M 500 105 L 500 400" class="data-flow-glow anim-forward-glow" />
+                            <path d="M 166 105 Q 166 250 500 400" class="data-flow-glow anim-forward-glow" />
+                            <path d="M 833 105 Q 833 250 500 400" class="data-flow-glow anim-reverse-glow" />
+                        </g>
+
+                        <!-- Intense Bright Core (Hardware Accelerated) -->
+                        <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+                            <path d="M 166 105 L 500 105" stroke="url(#glowGradient1)" class="data-flow-core anim-forward-core" />
+                            <path d="M 833 105 L 500 105" stroke="url(#glowGradient2)" class="data-flow-core anim-reverse-core" />
+                            <path d="M 500 105 L 500 400" stroke="url(#glowGradient3)" stroke-width="4" class="data-flow-core anim-forward-core" />
+                            
+                            <!-- Bypassing curved wires -->
+                            <path d="M 166 105 Q 166 250 500 400" stroke="url(#glowGradient3)" class="data-flow-core anim-forward-core" />
+                            <path d="M 833 105 Q 833 250 500 400" stroke="url(#glowGradient3)" class="data-flow-core anim-reverse-core" />
+                        </g>
+                    </svg>
+                </div>
 
                 <!-- Top Row (3 Cards) -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
-                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.1s;">
-                        <div class="w-16 h-16 rounded-full bg-[#0a011a] border border-white/10 mb-6 flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform">
-                            <i data-lucide="book-open" class="w-6 h-6 text-white icon-pulse"></i>
+                    <div class="premium-card p-6 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.1s;">
+                        <div class="w-12 h-12 rounded-full bg-[#05010a] border border-white/5 mb-4 flex items-center justify-center transition-transform">
+                            <i data-lucide="book-open" class="w-5 h-5 text-gray-300"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-3 transition-colors">1. Pre-Production</h3>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed">
-                            Script breakdowns, dynamic storyboarding, and smart shoot scheduling synchronized instantly.
+                        <h3 class="font-editorial text-xl text-white mb-2 transition-colors">1. Pre-Production</h3>
+                        <p class="text-gray-400 text-xs font-light leading-relaxed">
+                            Centralize your vision. Live script breakdowns, dynamic storyboarding, and smart call sheets that adapt in real-time.
                         </p>
                     </div>
 
-                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.2s;">
-                        <div class="w-16 h-16 rounded-full bg-[#0a011a] border border-brand/40 mb-6 flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.2)] group-hover:scale-105 transition-transform">
-                            <i data-lucide="video" class="w-6 h-6 text-brand-light icon-pulse"></i>
+                    <div class="premium-card p-6 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.2s;">
+                        <div class="w-12 h-12 rounded-full bg-[#05010a] border border-brand/40 mb-4 flex items-center justify-center transition-transform">
+                            <i data-lucide="video" class="w-5 h-5 text-brand-light"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-3 transition-colors">2. Production</h3>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed">
-                            Secure cloud asset ingest and instant proxy generation synced directly from the camera card.
+                        <h3 class="font-editorial text-xl text-white mb-2 transition-colors">2. Production</h3>
+                        <p class="text-gray-400 text-xs font-light leading-relaxed">
+                            Zero-wait dailies. Securely ingest RAW assets directly from the camera card to the cloud, generating lightweight editing proxies instantly.
                         </p>
                     </div>
 
-                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.3s;">
-                        <div class="w-16 h-16 rounded-full bg-[#0a011a] border border-brand/60 mb-6 flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.3)] group-hover:scale-105 transition-transform">
-                            <i data-lucide="scissors" class="w-6 h-6 text-brand-light icon-pulse"></i>
+                    <div class="premium-card p-6 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.3s;">
+                        <div class="w-12 h-12 rounded-full bg-[#05010a] border border-brand/60 mb-4 flex items-center justify-center transition-transform">
+                            <i data-lucide="scissors" class="w-5 h-5 text-brand-light"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-3 transition-colors">3. Post-Production</h3>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed">
-                            Heavy VFX compositing, pro node-based HDR color grading, and immersive spatial audio mixing.
+                        <h3 class="font-editorial text-xl text-white mb-2 transition-colors">3. Post-Production</h3>
+                        <p class="text-gray-400 text-xs font-light leading-relaxed">
+                            Uncompromising power. Handle heavy VFX roundtrips, node-based HDR grading, and spatial audio mixing without stressing your local hardware.
                         </p>
                     </div>
                 </div>
 
                 <!-- Bottom Row (1 Center Card Publishing) -->
-                <div class="flex justify-center mt-8 lg:mt-12 relative z-10">
-                    <div class="w-full max-w-md premium-card p-8 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.4s;">
-                        <div class="w-16 h-16 rounded-full bg-[#0a011a] border border-brand/80 mb-6 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] group-hover:scale-105 transition-transform">
-                            <i data-lucide="rocket" class="w-6 h-6 text-brand-light icon-pulse"></i>
+                <div class="flex justify-center mt-6 lg:mt-16 relative z-10">
+                    <div class="w-full max-w-sm premium-card p-6 flex flex-col items-center text-center reveal-3d interactive-3d-card group border-cyan-500/30" style="transition-delay: 0.4s;">
+                        <div class="w-12 h-12 rounded-full bg-[#05010a] border border-cyan-500/50 mb-4 flex items-center justify-center transition-transform shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+                            <i data-lucide="rocket" class="w-5 h-5 text-cyan-400"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-3 transition-colors">4. Publishing</h3>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed">
-                            Multi-platform delivery formatting, one-click mastering, and direct secure handoffs to clients.
+                        <h3 class="font-editorial text-xl text-white mb-2 transition-colors">4. Publishing</h3>
+                        <p class="text-gray-400 text-xs font-light leading-relaxed">
+                            Ship faster. Automated multi-format rendering, strict QC checks, and encrypted client handoffs with a single click.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 7. FAQ SECTION (Fixed Bug) -->
-        <section class="py-20 px-4 md:px-6 relative z-10 w-full max-w-4xl mx-auto">
+        <!-- 7. FAQ SECTION -->
+        <section class="py-20 px-4 md:px-6 relative z-10 w-full max-w-3xl mx-auto">
             <div class="text-center mb-12 reveal-up">
-                <h2 class="font-editorial text-3xl md:text-5xl text-white">Frequently Asked Questions</h2>
+                <h2 class="font-editorial text-3xl md:text-4xl text-white">Frequently Asked Questions</h2>
             </div>
             
             <div class="space-y-4">
-                <div class="premium-card p-6 md:p-8 reveal-up hover:border-white/10 transition-colors" style="transition-delay: 0.1s;">
-                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">How does Aktivus streamline pre-production planning?</h4>
-                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Aktivus provides integrated moodboards, interactive script breakdowns, and smart scheduling tools that automatically sync with your production calendar, ensuring the entire crew is aligned before the camera even rolls.</p>
+                <div class="premium-card p-5 md:p-6 reveal-up" style="transition-delay: 0.1s;">
+                    <h4 class="font-inter font-medium text-white text-sm md:text-base">How does Aktivus handle massive RAW files remotely?</h4>
+                    <p class="text-gray-400 text-xs mt-2 font-light leading-relaxed">We use a hybrid proxy-first approach. You edit with lightweight, cloud-streamed proxies instantly, while the high-res RAW files sync securely in the background. The final render happens on our cloud nodes, not your machine.</p>
                 </div>
-                <div class="premium-card p-6 md:p-8 reveal-up hover:border-brand/30 transition-colors" style="transition-delay: 0.2s;">
-                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">Can we manage raw footage and dailies securely during production?</h4>
-                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Yes. Our lightning-fast cloud ingest engine allows you to upload dailies directly from set. Editors can access lightweight proxies instantly, while heavy high-res RAW files (like ARRIRAW or REDCODE) sync securely in the background.</p>
+                <div class="premium-card p-5 md:p-6 reveal-up" style="transition-delay: 0.2s;">
+                    <h4 class="font-inter font-medium text-white text-sm md:text-base">Can we invite external clients for review without them seeing the whole project?</h4>
+                    <p class="text-gray-400 text-xs mt-2 font-light leading-relaxed">Absolutely. You can generate secure, password-protected review links for specific timelines or assets. Clients get a clean, branded interface to leave frame-specific comments—no account required.</p>
                 </div>
-                <div class="premium-card p-6 md:p-8 reveal-up hover:border-brand/40 transition-colors" style="transition-delay: 0.3s;">
-                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">Does the post-production suite handle heavy VFX and color grading?</h4>
-                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Absolutely. Aktivus features a true node-based compositing engine and professional ACES color wheels rivaling industry-standard studio software. All powered by our distributed cloud rendering, ensuring your local machine never lags.</p>
+                <div class="premium-card p-5 md:p-6 reveal-up" style="transition-delay: 0.3s;">
+                    <h4 class="font-inter font-medium text-white text-sm md:text-base">Does it replace Premiere Pro or DaVinci Resolve?</h4>
+                    <p class="text-gray-400 text-xs mt-2 font-light leading-relaxed">It supercharges them. While Aktivus has a robust web-based editor for quick cuts, we offer deep integration via plugins for Premiere Pro, Final Cut, and Resolve. Sync timelines, markers, and media effortlessly.</p>
                 </div>
-                <div class="premium-card p-6 md:p-8 reveal-up hover:border-brand/50 transition-colors" style="transition-delay: 0.4s;">
-                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">How secure is the cloud storage for unreleased IP?</h4>
-                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Security is our priority. We utilize AES-256 military-grade encryption at rest and in transit. Visual watermarking and granular role-based access control (RBAC) ensure your high-value IP never leaks before release.</p>
-                </div>
-                <div class="premium-card p-6 md:p-8 reveal-up hover:border-brand/60 transition-colors" style="transition-delay: 0.5s;">
-                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">Does it integrate with standard NLEs like Premiere Pro or DaVinci?</h4>
-                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Yes. While Aktivus offers a robust internal suite, we fully support AAF and XML roundtripping, allowing seamless integration with Adobe Premiere Pro, Final Cut Pro, and DaVinci Resolve workflows via our custom panel plugins.</p>
+                <div class="premium-card p-5 md:p-6 reveal-up" style="transition-delay: 0.4s;">
+                    <h4 class="font-inter font-medium text-white text-sm md:text-base">What about IP security?</h4>
+                    <p class="text-gray-400 text-xs mt-2 font-light leading-relaxed">We take it seriously. Aktivus employs AES-256 encryption at rest and in transit, enterprise-grade SSO, and forensic watermarking. Your unreleased content is locked down tighter than industry standards.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Manifesto Quote (Restored properly) -->
-        <section class="pb-24 pt-10 px-4 w-full max-w-5xl mx-auto">
-             <div class="premium-card interactive-3d-card p-10 md:p-20 flex flex-col items-center justify-center reveal-3d text-center border-brand/30 shadow-[0_0_50px_rgba(139,92,246,0.1)] relative overflow-visible transform hover:scale-[1.01] transition-transform duration-700">
-                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-60 h-30 bg-brand-neon/10 blur-[40px] pointer-events-none"></div>
-                
-                <i data-lucide="sparkles" class="w-12 h-12 text-brand-light mb-10 drop-shadow-[0_0_10px_rgba(167,139,250,0.5)] animate-pulse"></i>
-                <p class="font-editorial text-3xl md:text-5xl text-white italic leading-tight max-w-4xl tracking-tight drop-shadow-sm">
-                    "We built Aktivus to spark a revolution in the media and entertainment industry. We are breaking down the barriers between production teams and clients to provide a premium, unified ecosystem where true creativity thrives without friction."
+        <!-- Manifesto Quote -->
+        <section class="pb-24 pt-10 px-4 w-full max-w-4xl mx-auto">
+             <div class="premium-card p-10 md:p-16 flex flex-col items-center justify-center reveal-3d text-center border-white/5 shadow-none relative overflow-hidden">
+                <i data-lucide="sparkles" class="w-8 h-8 text-gray-500 mb-6 opacity-50"></i>
+                <p class="font-editorial text-2xl md:text-4xl text-white italic leading-tight max-w-3xl">
+                    "The industry is evolving, but our tools are stuck in the past. We built Aktivus to tear down the silos between on-set crews, post houses, and clients. This is the new baseline for high-end production."
                 </p>
-                <div class="mt-14 flex flex-col items-center">
-                    <div class="w-20 h-[2px] bg-gradient-to-r from-transparent via-brand-neon to-transparent mb-6"></div>
-                    <p class="text-[12px] tracking-[0.5em] uppercase text-brand-light font-inter font-bold opacity-80">The Aktivus Vision</p>
+                <div class="mt-10 flex flex-col items-center">
+                    <div class="w-12 h-[1px] bg-white/20 mb-4"></div>
+                    <p class="text-[10px] tracking-[0.3em] uppercase text-gray-500 font-inter font-semibold">The Aktivus Vision</p>
                 </div>
             </div>
         </section>
@@ -558,31 +704,31 @@
     </main>
 
     <!-- 8. FOOTER -->
-    <footer class="border-t border-white/5 pt-16 pb-8 px-6 md:px-8 relative z-10 w-full bg-[#010003]">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
+    <footer class="border-t border-white/5 pt-12 pb-8 px-6 md:px-8 relative z-10 w-full bg-[#000000]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
             <div class="flex items-center gap-4">
-                <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-10 md:h-12 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity cursor-pointer">
-                <div class="h-8 w-[1px] bg-white/10 hidden sm:block"></div>
-                <span class="text-gray-500 text-xs font-medium tracking-wider hidden sm:block">Aktivus Private Limited © 2026</span>
+                <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-6 md:h-8 w-auto object-contain opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                <div class="h-4 w-[1px] bg-white/10 hidden sm:block"></div>
+                <span class="text-gray-600 text-[10px] uppercase tracking-widest hidden sm:block">Aktivus Private Limited © 2026</span>
             </div>
             
-            <div class="flex gap-8 text-gray-400">
-                <a href="https://x.com/Aktivuslimited" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-300" aria-label="X (Twitter)">
-                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <div class="flex gap-6 text-gray-500">
+                <a href="https://x.com/Aktivuslimited" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300" aria-label="X (Twitter)">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
-                <a href="https://www.instagram.com/aktivus.in" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(217,70,239,0.5)] transition-all duration-300" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                <a href="https://www.instagram.com/aktivus.in" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
-                <a href="https://discord.gg/wwAn2yMWx4" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(139,92,246,0.5)] transition-all duration-300" aria-label="Discord">
-                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                <a href="https://discord.gg/wwAn2yMWx4" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300" aria-label="Discord">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
                 </a>
             </div>
             
-            <span class="text-gray-500 text-xs font-medium tracking-wider hidden sm:block">Aktivus Private Limited © 2026</span>
+            <span class="text-gray-600 text-[10px] uppercase tracking-widest block sm:hidden">Aktivus Private Limited © 2026</span>
         </div>
         
-        <div class="max-w-7xl mx-auto border-t border-white/5 pt-6 flex justify-center">
-            <p class="text-[10px] tracking-[0.4em] text-gray-500 uppercase font-inter hover:text-brand-light transition-all duration-300 cursor-default opacity-50 hover:opacity-100">
+        <div class="max-w-7xl mx-auto border-t border-white/5 pt-4 flex justify-center">
+            <p class="text-[8px] tracking-[0.3em] text-gray-600 uppercase font-inter hover:text-gray-400 transition-colors duration-300 cursor-default">
                 Developed by Vedonyx
             </p>
         </div>
@@ -688,12 +834,12 @@
             viewer.addEventListener('click', () => {
                 isPlaying = !isPlaying;
                 if(isPlaying) {
-                    playBtn.innerHTML = '<i data-lucide="pause-circle" class="w-10 h-10 text-brand-neon drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"></i>';
+                    playBtn.innerHTML = '<i data-lucide="pause-circle" class="w-8 h-8 text-brand-neon drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"></i>';
                     if (playhead) playhead.style.animationPlayState = 'running';
                     if (recLight) recLight.style.animationPlayState = 'running';
                     vuBars.forEach(b => b.style.animationPlayState = 'running');
                 } else {
-                    playBtn.innerHTML = '<i data-lucide="play-circle" class="w-10 h-10 text-white/50 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"></i>';
+                    playBtn.innerHTML = '<i data-lucide="play-circle" class="w-8 h-8 text-white/50"></i>';
                     if (playhead) playhead.style.animationPlayState = 'paused';
                     if (recLight) recLight.style.animationPlayState = 'paused';
                     vuBars.forEach(b => b.style.animationPlayState = 'paused');
@@ -728,16 +874,18 @@
 
                 setTimeout(() => {
                     btnText.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Access Requested`;
-                    magneticBtn.classList.add('btn-success');
+                    magneticBtn.classList.add('bg-success', 'border-success', 'text-white');
+                    magneticBtn.classList.remove('bg-white', 'text-black');
                     emailInput.value = '';
                     emailInput.placeholder = 'You are on the list!';
                     lucide.createIcons();
                     
                     setTimeout(() => {
                         btnText.innerHTML = `Request Access`;
-                        magneticBtn.classList.remove('btn-success');
+                        magneticBtn.classList.remove('bg-success', 'border-success', 'text-white');
+                        magneticBtn.classList.add('bg-white', 'text-black');
                         magneticBtn.style.pointerEvents = 'auto';
-                        emailInput.placeholder = 'Enter your business email...';
+                        emailInput.placeholder = 'name@studio.com';
                     }, 4000);
                 }, 2000);
             });
@@ -751,7 +899,7 @@
                 magneticBtn.style.transform = `translate3d(${x * 0.15}px, ${y * 0.15}px, 0) scale(1.02)`;
             });
             magneticBtn.addEventListener('mouseleave', () => {
-                if(!magneticBtn.classList.contains('btn-success')) {
+                if(!magneticBtn.classList.contains('bg-success')) {
                     magneticBtn.style.transform = `translate3d(0px, 0px, 0) scale(1)`;
                 }
             });
@@ -814,10 +962,10 @@
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                navbar.classList.add('bg-[#010003]/80', 'border-white/5');
+                navbar.classList.add('bg-[#000000]/80', 'border-white/5');
                 navbar.classList.replace('h-24', 'h-20');
             } else {
-                navbar.classList.remove('bg-[#010003]/80', 'border-white/5');
+                navbar.classList.remove('bg-[#000000]/80', 'border-white/5');
                 navbar.classList.replace('h-20', 'h-24');
             }
         });
