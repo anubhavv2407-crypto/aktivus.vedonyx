@@ -28,7 +28,7 @@
                         brand: {
                             950: '#010003', /* Extreme Dark Void */
                             900: '#0a011a',
-                            800: '#1b033d', /* Deep Space Purple */
+                            800: '#13022b', /* Deep Space Purple */
                             DEFAULT: '#8b5cf6',
                             light: '#c4b5fd',
                             neon: '#d946ef',
@@ -42,24 +42,26 @@
     </script>
 
     <style>
-        /* Base Reset & Extreme Cinematic Deep Space Background */
+        /* -------------------------
+           BASE RESET & EXTREME DARK PURPLE BACKGROUND
+           ------------------------- */
         body {
-            background-color: #010003;
+            background-color: #010002;
+            /* Extremely dark and subtle purple gradients */
             background-image: 
-                radial-gradient(ellipse at 50% -20%, #170133 0%, transparent 60%),
-                radial-gradient(ellipse at 100% 60%, #090117 0%, transparent 50%),
-                radial-gradient(ellipse at 0% 100%, #110121 0%, transparent 50%);
+                radial-gradient(circle at 20vw 20vh, rgba(107, 33, 168, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80vw 80vh, rgba(147, 51, 234, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 0%, #0a0117 0%, transparent 70%);
             color: #ffffff;
             overflow-x: hidden;
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
-            overscroll-behavior-y: none; 
         }
 
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #010003; border-left: 1px solid rgba(255,255,255,0.02); }
+        ::-webkit-scrollbar-track { background: #010002; border-left: 1px solid rgba(255,255,255,0.02); }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #4c1d95, #701a75); 
+            background: linear-gradient(180deg, #3b0764, #701a75); 
             border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.05);
         }
@@ -68,7 +70,7 @@
            PREMIUM LOADER
            ------------------------- */
         #premium-loader {
-            position: fixed; inset: 0; background-color: #010003; z-index: 9999;
+            position: fixed; inset: 0; background-color: #010002; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
             will-change: transform, opacity;
@@ -77,135 +79,31 @@
             font-size: 6rem; font-weight: 400; line-height: 1;
             background: linear-gradient(135deg, #ffffff 0%, #d946ef 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 24px;
-            text-shadow: 0 0 30px rgba(217, 70, 239, 0.4);
+            text-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
         }
-        .loader-bar-container { width: 240px; height: 1px; background: rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; }
-        #loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #d946ef; transition: width 0.1s linear; box-shadow: 0 0 10px #d946ef; }
+        .loader-bar-container { width: 240px; height: 1px; background: rgba(255, 255, 255, 0.05); position: relative; overflow: hidden; }
+        #loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #9333ea; transition: width 0.1s linear; box-shadow: 0 0 10px rgba(147,51,234,0.5); }
         body.loaded #premium-loader { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
         /* -------------------------
-           DYNAMIC MOUSE GLOW
+           DYNAMIC MOUSE GLOW (Softened)
            ------------------------- */
         .cursor-glow {
-            position: fixed; top: 0; left: 0; width: 800px; height: 800px;
-            background: radial-gradient(circle closest-side, rgba(167, 139, 250, 0.06), transparent);
+            position: fixed; top: 0; left: 0; width: 600px; height: 600px;
+            background: radial-gradient(circle closest-side, rgba(167, 139, 250, 0.03), transparent);
             border-radius: 50%; pointer-events: none; z-index: -1;
             will-change: transform; transform: translate3d(-500px, -500px, 0); 
         }
 
         /* -------------------------
-           EXTREME 3D DARK SPACE UNIVERSE (FULL SCREEN & LAG FREE)
+           HERO ANIMATIONS
            ------------------------- */
-        #hero-interactive-area {
-            position: absolute; inset: 0; width: 100vw; height: 100%; min-height: 100vh;
-            z-index: 0; cursor: grab; display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            /* Starry Space Vibe Background */
-            background-image: 
-                radial-gradient(2px 2px at 20vw 30vh, #ffffff 100%, transparent),
-                radial-gradient(1px 1px at 40vw 70vh, rgba(255,255,255,0.5) 100%, transparent),
-                radial-gradient(2px 2px at 80vw 20vh, #d946ef 100%, transparent),
-                radial-gradient(1px 1px at 90vw 80vh, rgba(255,255,255,0.8) 100%, transparent),
-                radial-gradient(circle at center, rgba(88, 28, 135, 0.15) 0%, transparent 70%);
-        }
-        #hero-interactive-area:active { cursor: grabbing; }
-
-        #hero-3d-scene {
-            position: relative;
-            width: 100%; height: 100%;
-            perspective: 800px;
-            transform-style: preserve-3d;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        #hero-space-container {
-            position: relative;
-            width: 180vw; height: 180vw; max-width: 2500px; max-height: 2500px;
-            transform-style: preserve-3d;
-            will-change: transform;
-            transform: translate3d(0,0,0) rotateX(65deg) rotateZ(20deg);
-        }
-
-        /* Deep Dark Energy Core */
-        .space-nebula {
-            position: absolute; top: 50%; left: 50%;
-            width: 25vw; height: 25vw; max-width: 250px; max-height: 250px;
-            margin-top: -12.5vw; margin-left: -12.5vw;
-            background: radial-gradient(circle, rgba(217,70,239,0.9) 0%, rgba(107,33,168,0.8) 30%, rgba(15,1,33,0.9) 70%, transparent 85%);
-            border-radius: 50%;
-            box-shadow: 
-                0 0 100px 30px rgba(192, 38, 211, 0.6), 
-                0 0 200px 80px rgba(88, 28, 135, 0.5),
-                inset 0 0 50px #fff;
-            transform: translate3d(0,0,0) rotateX(-90deg); 
-            animation: pulseNebula 3s infinite alternate ease-in-out;
-            will-change: transform, box-shadow;
-            transform-style: preserve-3d;
-        }
-
-        @keyframes pulseNebula {
-            0% { transform: translate3d(0,0,0) rotateX(-90deg) scale(0.9); box-shadow: 0 0 80px 20px rgba(192, 38, 211, 0.5), 0 0 150px 60px rgba(88, 28, 135, 0.4); }
-            100% { transform: translate3d(0,0,0) rotateX(-90deg) scale(1.2); box-shadow: 0 0 150px 50px rgba(192, 38, 211, 0.8), 0 0 300px 120px rgba(107, 33, 168, 0.6); }
-        }
-
-        /* Massive Extreme Dark Purple Rings */
-        .space-orbit {
-            position: absolute; top: 50%; left: 50%;
-            border-radius: 50%;
-            transform-style: preserve-3d;
-            will-change: transform;
-        }
-
-        .orbit-1 {
-            width: 50vw; height: 50vw; margin-top: -25vw; margin-left: -25vw;
-            border: 2px solid rgba(217, 70, 239, 0.3);
-            box-shadow: inset 0 0 40px rgba(217,70,239,0.3), 0 0 40px rgba(217,70,239,0.3);
-            animation: spinOrbit 15s linear infinite;
-        }
-        .orbit-2 {
-            width: 80vw; height: 80vw; margin-top: -40vw; margin-left: -40vw;
-            border: 3px solid rgba(139, 92, 246, 0.2);
-            border-top-color: rgba(217, 70, 239, 0.9);
-            border-bottom-color: rgba(139, 92, 246, 0.9);
-            transform: rotateX(50deg);
-            animation: spinOrbit 25s linear infinite reverse;
-            box-shadow: 0 0 50px rgba(88, 28, 135, 0.4);
-        }
-        .orbit-3 {
-            width: 120vw; height: 120vw; margin-top: -60vw; margin-left: -60vw;
-            border: 2px dashed rgba(167, 139, 250, 0.4);
-            transform: rotateY(35deg);
-            animation: spinOrbit 40s linear infinite;
-        }
-        .orbit-4 {
-            width: 160vw; height: 160vw; margin-top: -80vw; margin-left: -80vw;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-left-color: rgba(217, 70, 239, 0.6);
-            transform: rotateX(-20deg) rotateY(20deg);
-            animation: spinOrbit 50s linear infinite reverse;
-        }
-
-        /* Orbiting Glowing Planets */
-        .space-satellite {
-            position: absolute; top: -6px; left: 50%;
-            width: 12px; height: 12px; background: #fff;
-            border-radius: 50%; transform: translateX(-50%);
-            box-shadow: 0 0 25px 8px #d946ef, 0 0 40px 15px #8b5cf6;
-        }
-        .orbit-2 .space-satellite { top: 50%; left: -6px; background: #c4b5fd; box-shadow: 0 0 25px 8px #8b5cf6; }
-        .orbit-3 .space-satellite { top: 80%; left: 10%; background: #f0abfc; box-shadow: 0 0 20px 8px #d946ef; width: 8px; height: 8px;}
-
-        @keyframes spinOrbit {
-            0% { transform: rotateZ(0deg) rotateX(inherit) rotateY(inherit); }
-            100% { transform: rotateZ(360deg) rotateX(inherit) rotateY(inherit); }
-        }
-
         .hero-entrance {
-            animation: hero3DEnter 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation: hero3DEnter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             will-change: transform, opacity;
         }
         @keyframes hero3DEnter {
-            0% { opacity: 0; transform: scale(1.1) translateY(30px); }
+            0% { opacity: 0; transform: scale(1.05) translateY(20px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
@@ -214,223 +112,131 @@
            ------------------------- */
         .text-italic-premium {
             font-style: italic; font-weight: 400; color: #e9d5ff;
-            text-shadow: 0 0 40px rgba(139, 92, 246, 0.9);
+            text-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
             display: inline-block; padding-bottom: 0.1em;
         }
         .text-gradient {
             background: linear-gradient(135deg, #ffffff 0%, #f0abfc 50%, #d946ef 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text; display: inline-block; padding-bottom: 0.2em; margin-bottom: -0.2em;
-            filter: drop-shadow(0 10px 30px rgba(217, 70, 239, 0.5));
+            filter: drop-shadow(0 5px 15px rgba(217, 70, 239, 0.2));
         }
 
         /* -------------------------
            PREMIUM SHINE BADGES
            ------------------------- */
         .shine-badge {
-            position: relative; overflow: hidden; transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(217, 70, 239, 0.4), inset 0 0 15px rgba(255,255,255,0.1);
-            border: 1px solid rgba(217, 70, 239, 0.3); pointer-events: auto; 
+            position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.1), inset 0 0 10px rgba(255,255,255,0.03);
+            border: 1px solid rgba(139, 92, 246, 0.2); pointer-events: auto; 
+            will-change: transform;
         }
         .shine-badge::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
             transform: skewX(-20deg); animation: shineSweep 3s infinite;
+            will-change: left;
         }
-        .shine-badge:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 0 40px rgba(217, 70, 239, 0.8); border-color: rgba(217, 70, 239, 0.8); }
+        .shine-badge:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.4); }
         @keyframes shineSweep { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
         /* -------------------------
-           GLASS CARDS
+           PREMIUM CARDS (Extremely Dark & Sleek)
            ------------------------- */
         .premium-card {
-            background: rgba(8, 1, 15, 0.8); border: 1px solid rgba(139, 92, 246, 0.15); border-radius: 24px;
+            background: rgba(5, 1, 10, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border-color 0.4s ease;
             position: relative; overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 15px 40px rgba(0,0,0,0.6);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.6);
             will-change: transform;
         }
         .premium-card:hover {
-            transform: translateY(-8px) scale(1.02); border-color: rgba(217, 70, 239, 0.6);
-            box-shadow: 0 30px 60px -10px rgba(139, 92, 246, 0.4), inset 0 0 30px rgba(0,0,0,0.9);
+            transform: translateY(-4px); border-color: rgba(139, 92, 246, 0.25);
+            box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.1), inset 0 0 20px rgba(0,0,0,0.8);
             z-index: 10;
         }
-        .interactive-3d-card { transform-style: preserve-3d; transform: perspective(1500px); transition: transform 0.15s ease-out; will-change: transform; }
+        .interactive-3d-card { transform-style: preserve-3d; transform: perspective(1500px); transition: transform 0.1s ease-out; will-change: transform; }
 
-        /* -------------------------
-           EXTREME 3D ENERGY WIRES (HTML/CSS)
-           ------------------------- */
-        .ecosystem-wire-network {
-            position: absolute; inset: 0; pointer-events: none; z-index: -1;
-        }
-        
-        /* 3D Cylindrical Tubes */
-        .eco-3d-tube {
-            position: absolute;
-            background: linear-gradient(90deg, #090117 0%, #3b0764 50%, #090117 100%);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), inset 0 0 10px rgba(0,0,0,0.8);
-            overflow: hidden;
-        }
-        /* Tech texture on pipes */
-        .eco-3d-tube::after {
-            content: ''; position: absolute; inset: 0;
-            background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(0,0,0,0.5) 8px, rgba(0,0,0,0.5) 16px);
-            opacity: 0.5;
-        }
-
-        /* Tube Positions */
-        .tube-h-left { top: 25%; left: 16.66%; width: 33.34%; height: 12px; background: linear-gradient(0deg, #090117, #4c1d95, #090117); }
-        .tube-h-right { top: 25%; left: 50%; width: 33.34%; height: 12px; background: linear-gradient(0deg, #090117, #4c1d95, #090117); }
-        .tube-v-main { top: 25%; left: 50%; transform: translateX(-50%); width: 14px; height: 60%; background: linear-gradient(90deg, #090117, #581c87, #090117); }
-
-        /* The Intense Energy Pulses inside tubes */
-        .energy-pulse {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 15px 5px #fff, 0 0 30px 15px #d946ef, 0 0 50px 25px #8b5cf6;
-            will-change: transform;
-            z-index: 10;
-        }
-
-        /* Synchronization: 4s Total Loop */
-        /* Left to Center */
-        .pulse-right {
-            width: 50px; height: 100%; top: 0; left: -50px;
-            animation: shootRight 4s infinite cubic-bezier(0.4, 0, 1, 1);
-        }
-        /* Right to Center */
-        .pulse-left {
-            width: 50px; height: 100%; top: 0; right: -50px;
-            animation: shootLeft 4s infinite cubic-bezier(0.4, 0, 1, 1);
-        }
-        /* Center down to Publishing */
-        .pulse-down {
-            width: 100%; height: 60px; top: -60px; left: 0;
-            animation: shootDown 4s infinite cubic-bezier(0.4, 0, 1, 1);
-        }
-
-        @keyframes shootRight {
-            0% { transform: translateX(0); opacity: 1; }
-            45% { transform: translateX(calc(33.34vw + 50px)); opacity: 1; }
-            46% { opacity: 0; }
-            100% { opacity: 0; }
-        }
-        @keyframes shootLeft {
-            0% { transform: translateX(0); opacity: 1; }
-            45% { transform: translateX(calc(-33.34vw - 50px)); opacity: 1; }
-            46% { opacity: 0; }
-            100% { opacity: 0; }
-        }
-        @keyframes shootDown {
-            0% { opacity: 0; }
-            45% { transform: translateY(0); opacity: 0; } /* Wait for H pulses to arrive */
-            46% { opacity: 1; }
-            95% { transform: translateY(calc(60vh + 60px)); opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* Central Glowing Junction Node */
-        .tube-junction {
-            position: absolute;
-            top: 25%; left: 50%;
-            width: 24px; height: 24px;
-            background: #fff;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 20px #d946ef, inset 0 0 10px #7c3aed;
-            animation: pulseJunction 4s infinite;
-            z-index: 5;
-        }
-
-        @keyframes pulseJunction {
-            0%, 40% { box-shadow: 0 0 20px #8b5cf6; transform: translate(-50%, -50%) scale(1); }
-            45% { box-shadow: 0 0 80px 30px #d946ef, 0 0 150px 50px #8b5cf6; transform: translate(-50%, -50%) scale(1.5); background: #f0abfc;}
-            55%, 100% { box-shadow: 0 0 20px #8b5cf6; transform: translate(-50%, -50%) scale(1); background: #fff;}
-        }
-
-        .icon-pulse { animation: iconGlow 2s infinite alternate ease-in-out; }
+        .icon-pulse { animation: iconGlow 3s infinite alternate ease-in-out; }
         @keyframes iconGlow {
-            0% { filter: drop-shadow(0 0 5px currentColor); transform: scale(1); }
-            100% { filter: drop-shadow(0 0 25px currentColor); transform: scale(1.15); }
+            0% { filter: drop-shadow(0 0 2px currentColor); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 10px currentColor); transform: scale(1.05); }
         }
 
         /* -------------------------
-           PRO TIMER
+           PRO TIMER (Sleek Dark)
            ------------------------- */
         .pro-timer-card {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px; padding: 24px 16px; min-width: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(10px); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px; padding: 16px 12px; min-width: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px); box-shadow: inset 0 0 10px rgba(0,0,0,0.3); transition: all 0.3s ease;
         }
-        @media (min-width: 640px) { .pro-timer-card { min-width: 110px; padding: 28px 20px; } }
-        .pro-timer-card:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-3px); box-shadow: inset 0 0 25px rgba(0,0,0,0.6), 0 10px 40px -10px rgba(139,92,246,0.3); }
+        @media (min-width: 640px) { .pro-timer-card { min-width: 90px; padding: 20px 16px; } }
+        .pro-timer-card:hover { border-color: rgba(255, 255, 255, 0.08); transform: translateY(-2px); box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 8px 20px -10px rgba(139,92,246,0.1); }
 
         /* -------------------------
-           UI CONTAINER
+           UI CONTAINER (NLE)
            ------------------------- */
         .pro-nle-container {
-            width: 100%; background: #05000a; border-radius: 14px; border: 1px solid rgba(139, 92, 246, 0.2);
-            overflow: hidden; box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 1), 0 0 0 1px rgba(0,0,0,1); display: flex; flex-direction: column;
-            transform: rotateX(5deg) translateZ(30px); transform-origin: bottom center; transition: transform 0.4s ease-out; will-change: transform;
+            width: 100%; background: #020005; border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.1);
+            overflow: hidden; box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 1), 0 0 0 1px rgba(0,0,0,1); display: flex; flex-direction: column;
+            transform: rotateX(3deg) translateZ(15px); transform-origin: bottom center; transition: transform 0.4s ease-out; will-change: transform;
         }
-        .pro-nle-container:hover { transform: rotateX(0deg) translateZ(60px); box-shadow: 0 50px 100px -15px rgba(0, 0, 0, 1), 0 0 0 1px rgba(0,0,0,1), 0 30px 80px rgba(217,70,239,0.3); }
-        .pro-nle-header { height: 38px; background: #0a011a; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; padding: 0 16px; gap: 8px; }
+        .pro-nle-container:hover { transform: rotateX(0deg) translateZ(25px); box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 1), 0 0 0 1px rgba(0,0,0,1), 0 15px 40px rgba(139,92,246,0.1); }
+        .pro-nle-header { height: 32px; background: #06010d; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; padding: 0 16px; gap: 8px; }
         .mac-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); cursor:pointer;}
         .mac-dot:hover{filter:brightness(1.5);}
         .mac-close { background: #ed6a5e; } .mac-min { background: #f4bf4f; } .mac-max { background: #61c554; }
         .nle-tab { font-size: 9px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; cursor: pointer; position: relative; transition: color 0.2s;}
         .nle-tab:hover {color:#fff;}
-        .nle-tab.active { color: #fff; text-shadow: 0 0 10px rgba(217,70,239,0.8);} 
-        .nle-tab.active::after { content: ''; position: absolute; bottom: -13px; left: 0; width: 100%; height: 2px; background: #d946ef; box-shadow: 0 -2px 10px #d946ef; }
+        .nle-tab.active { color: #fff; text-shadow: 0 0 10px rgba(217,70,239,0.5);} 
+        .nle-tab.active::after { content: ''; position: absolute; bottom: -13px; left: 0; width: 100%; height: 2px; background: #9333ea; box-shadow: 0 -2px 10px #9333ea; }
         
         .pro-nle-viewport-area { height: 100px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; }
-        .media-pool { width: 25%; border-right: 1px solid rgba(255,255,255,0.05); padding: 10px; display: flex; flex-direction: column; gap: 4px; background:#05000a;}
-        .media-item { height: 20px; background: #110121; border-radius: 3px; border: 1px solid rgba(255,255,255,0.05); cursor:pointer; transition:background 0.2s;}
-        .media-item:hover {background:#1b033d;} .media-item.active{background:#4c1d95; border-color:#d946ef;}
+        .media-pool { width: 25%; border-right: 1px solid rgba(255,255,255,0.05); padding: 10px; display: flex; flex-direction: column; gap: 4px; background:#040008;}
+        .media-item { height: 20px; background: #0c011a; border-radius: 3px; border: 1px solid rgba(255,255,255,0.03); cursor:pointer; transition:background 0.2s;}
+        .media-item:hover {background:#14022b;} .media-item.active{background:#2e1065; border-color:#8b5cf6;}
         .viewer { flex-grow: 1; background: #000; position: relative; display: flex; align-items: center; justify-content: center; cursor:pointer;}
-        .viewer:hover{box-shadow: inset 0 0 40px rgba(217,70,239,0.2);}
+        .viewer:hover{box-shadow: inset 0 0 30px rgba(139,92,246,0.1);}
         .viewer::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
-        .vu-meters { width: 15%; border-left: 1px solid rgba(255,255,255,0.05); padding: 10px; display: flex; align-items: flex-end; justify-content: center; gap: 4px; background: #05000a; }
+        .vu-meters { width: 15%; border-left: 1px solid rgba(255,255,255,0.05); padding: 10px; display: flex; align-items: flex-end; justify-content: center; gap: 4px; background: #040008; }
         .vu-bar { width: 6px; height: 100%; background: linear-gradient(to top, #10b981 50%, #eab308 80%, #ef4444 100%); opacity: 0.8; position: relative; overflow: hidden; }
-        .vu-bar::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%; background: #05000a; animation: vuBounce 0.5s infinite alternate; will-change: height; }
+        .vu-bar::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%; background: #040008; animation: vuBounce 0.5s infinite alternate; will-change: height; }
         .vu-bar.paused::after { animation-play-state: paused; height:90%;}
         @keyframes vuBounce { 0% { height: 80%; } 100% { height: 20%; } }
 
         .pro-nle-timeline { flex-grow: 1; display: flex; flex-direction: column; position: relative; height: 120px; background: #020005;}
-        .pro-nle-ruler { height: 26px; background: #05000a; border-bottom: 1px solid rgba(255, 255, 255, 0.05); position: relative; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 4%); background-position: bottom; background-size: 100% 30%; background-repeat: no-repeat; }
-        .pro-timecode { position: absolute; bottom: 8px; font-family: 'Inter', monospace; font-size: 8px; color: rgba(255,255,255,0.5); transform: translateX(-50%); }
-        .days-marker { position: absolute; top: 2px; font-family: 'Inter', monospace; font-size: 9px; color: #ef4444; font-weight: bold; transform: translateX(-50%); background: rgba(239, 68, 68, 0.15); padding: 1px 4px; border-radius: 2px; border: 1px solid rgba(239, 68, 68, 0.5); box-shadow: 0 0 15px rgba(239,68,68,0.6); animation: pulseMarker 2s infinite; z-index: 40; cursor: pointer; transition:transform 0.2s;}
-        .days-marker:hover{transform:translateX(-50%) scale(1.1); background:rgba(239,68,68,0.3);}
-        @keyframes pulseMarker { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .pro-playhead { position: absolute; top: 0; bottom: 0; width: 1px; background: #fff; z-index: 30; box-shadow: 0 0 20px 3px #d946ef; animation: proSweep 8s linear infinite; will-change: left, transform; transform: translateZ(0); }
+        .pro-nle-ruler { height: 26px; background: #040008; border-bottom: 1px solid rgba(255, 255, 255, 0.05); position: relative; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 4%); background-position: bottom; background-size: 100% 30%; background-repeat: no-repeat; }
+        .pro-timecode { position: absolute; bottom: 8px; font-family: 'Inter', monospace; font-size: 8px; color: rgba(255,255,255,0.3); transform: translateX(-50%); }
+        .days-marker { position: absolute; top: 2px; font-family: 'Inter', monospace; font-size: 9px; color: #ef4444; font-weight: bold; transform: translateX(-50%); background: rgba(239, 68, 68, 0.1); padding: 1px 4px; border-radius: 2px; border: 1px solid rgba(239, 68, 68, 0.2); box-shadow: 0 0 10px rgba(239,68,68,0.1); animation: pulseMarker 3s infinite; z-index: 40; cursor: pointer; transition:transform 0.2s;}
+        .days-marker:hover{transform:translateX(-50%) scale(1.05); background:rgba(239,68,68,0.2);}
+        @keyframes pulseMarker { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .pro-playhead { position: absolute; top: 0; bottom: 0; width: 1px; background: #fff; z-index: 30; box-shadow: 0 0 10px 1px rgba(167,139,250,0.4); animation: proSweep 8s linear infinite; will-change: left, transform; transform: translateZ(0); }
         .pro-playhead.paused {animation-play-state:paused;}
-        .pro-playhead-cap { position: absolute; top: 0; left: -5px; width: 11px; height: 10px; background: #ffffff; clip-path: polygon(0 0, 100% 0, 50% 100%); box-shadow:0 5px 15px rgba(217,70,239,0.8);}
+        .pro-playhead-cap { position: absolute; top: 0; left: -4px; width: 9px; height: 8px; background: #ffffff; clip-path: polygon(0 0, 100% 0, 50% 100%); box-shadow:0 3px 10px rgba(167,139,250,0.3);}
         .pro-track { flex-grow: 1; border-bottom: 1px solid rgba(255, 255, 255, 0.03); display: flex; position: relative; }
-        .pro-track-header { width: 60px; min-width: 60px; background: #0a011a; border-right: 1px solid #000; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow:2px 0 5px rgba(0,0,0,0.5);}
-        .pro-workspace { flex-grow: 1; position: relative; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 10%); }
-        .pro-clip { position: absolute; top: 5px; bottom: 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); border-top: 2px solid; overflow: hidden; display: flex; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.5); cursor: pointer; transition:all 0.2s;}
-        .pro-clip:hover{filter:brightness(1.3); transform:scaleY(1.05); z-index:20;}
-        .pro-clip.active-clip{border-color:#fff; border-top-color:#fff; box-shadow:0 0 25px rgba(217,70,239,0.8); z-index:25; transform:scale(1.02, 1.1);}
+        .pro-track-header { width: 60px; min-width: 60px; background: #06010d; border-right: 1px solid #000; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow:2px 0 5px rgba(0,0,0,0.5);}
+        .pro-workspace { flex-grow: 1; position: relative; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.01) 0, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 10%); }
+        .pro-clip { position: absolute; top: 5px; bottom: 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); border-top: 2px solid; overflow: hidden; display: flex; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.5); cursor: pointer; transition:all 0.2s;}
+        .pro-clip:hover{filter:brightness(1.2); transform:scaleY(1.05); z-index:20;}
+        .pro-clip.active-clip{border-color:#fff; border-top-color:#fff; box-shadow:0 0 15px rgba(167,139,250,0.4); z-index:25; transform:scale(1.02, 1.1);}
         .pro-clip-video { background: #261642; border-color: #552d94; border-top-color: #8b5cf6;}
         .pro-clip-audio { background: #122830; border-color: #214e5e; border-top-color: #06b6d4; align-items: flex-end;}
-        .pro-waveform { width: 100%; height: 60%; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.3) 0, rgba(255,255,255,0.3) 1px, transparent 1px, transparent 3px); margin-bottom: 2px; opacity: 0.8; }
+        .pro-waveform { width: 100%; height: 60%; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.2) 0, rgba(255,255,255,0.2) 1px, transparent 1px, transparent 3px); margin-bottom: 2px; opacity: 0.8; }
         @keyframes proSweep { 0% { left: 0%; } 100% { left: 100%; } }
 
         /* -------------------------
-           ANIMATIONS
+           ANIMATIONS & FORMS
            ------------------------- */
-        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
-        .reveal-3d { opacity: 0; transform: translateY(60px) rotateX(-5deg) scale(0.98); transform-origin: top center; transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+        .reveal-up { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+        .reveal-3d { opacity: 0; transform: translateY(40px) rotateX(-5deg) scale(0.98); transform-origin: top center; transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
         .is-visible { opacity: 1 !important; transform: translateY(0) rotateX(0) scale(1) !important; }
 
         .unified-form { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); transition: border-color 0.4s ease; pointer-events: auto; }
-        .unified-form:focus-within { border-color: rgba(217, 70, 239, 0.8); box-shadow: 0 0 40px rgba(217, 70, 239, 0.4); background: rgba(255, 255, 255, 0.05); }
+        .unified-form:focus-within { border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 0 20px rgba(139, 92, 246, 0.15); background: rgba(255, 255, 255, 0.04); }
         .magnetic-btn { position: relative; overflow: hidden; display: inline-flex; justify-content: center; align-items: center; gap: 8px; will-change: transform; }
-        .magnetic-btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; background: radial-gradient(circle, rgba(217, 70, 239, 0.8) 0%, transparent 50%); transform: translate(-50%, -50%) scale(0); transition: transform 0.5s ease; pointer-events: none; }
+        .magnetic-btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 50%); transform: translate(-50%, -50%) scale(0); transition: transform 0.5s ease; pointer-events: none; }
         .magnetic-btn:hover::before { transform: translate(-50%, -50%) scale(1); }
         .magnetic-btn:active { transform: scale(0.95) !important; }
     </style>
@@ -458,12 +264,12 @@
             <div class="flex items-center gap-4 cursor-pointer group">
                 <img src="https://i.postimg.cc/15jq3FgK/image.png" alt="Aktivus Logo" class="h-10 md:h-12 w-auto transition-transform group-hover:scale-105 duration-500 object-contain drop-shadow-md">
             </div>
-            <div class="hidden sm:flex items-center gap-3 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-pointer hover:border-brand-neon/50 transition-colors">
+            <div class="hidden sm:flex items-center gap-3 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-pointer hover:border-brand-neon/40 transition-colors">
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-neon"></span>
                 </span>
-                <div class="text-[10px] font-bold text-gray-200 tracking-[0.2em] uppercase drop-shadow-[0_0_5px_rgba(217,70,239,0.5)]">
+                <div class="text-[10px] font-bold text-gray-200 tracking-[0.2em] uppercase drop-shadow-[0_0_5px_rgba(217,70,239,0.3)]">
                     Beta Version 2.0
                 </div>
             </div>
@@ -473,34 +279,11 @@
     <!-- Main Content -->
     <main class="relative w-full flex flex-col items-center">
 
-        <!-- 2. HERO SECTION WITH MASSIVE DRAGGABLE 3D UNIVERSE -->
+        <!-- 2. HERO SECTION (CLEAN, DARK, ELEGANT) -->
         <section class="hero-entrance min-h-[95vh] flex flex-col justify-center items-center px-4 md:px-6 relative w-full overflow-hidden">
             
-            <!-- Draggable Interactive Layer (Fills the entire screen) -->
-            <div id="hero-interactive-area" title="Drag to explore space">
-                <!-- 3D Scene Wrapper -->
-                <div id="hero-3d-scene">
-                    <div id="hero-space-container">
-                        <!-- Massive Cinematic Orbit Rings -->
-                        <div class="space-orbit orbit-1 ring-equator">
-                            <div class="space-satellite"></div>
-                        </div>
-                        <div class="space-orbit orbit-2 ring-meridian-1">
-                            <div class="space-satellite"></div>
-                        </div>
-                        <div class="space-orbit orbit-3 ring-meridian-2">
-                            <div class="space-satellite"></div>
-                        </div>
-                        <div class="space-orbit orbit-4 ring-meridian-3"></div>
-                        
-                        <!-- Central Glowing Nebula Core -->
-                        <div class="space-nebula"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Foreground Text Content (Pointer-events-none allows dragging background through the text) -->
-            <div class="relative z-20 text-center w-full mt-24 max-w-6xl mx-auto pointer-events-none">
+            <!-- Foreground Text Content -->
+            <div class="relative z-20 text-center w-full mt-24 max-w-6xl mx-auto">
                 
                 <a href="https://ytjobs.co/talent/profile/290250" target="_blank" rel="noopener noreferrer" class="shine-badge inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/5 backdrop-blur-md text-white text-[10px] sm:text-xs font-inter font-bold mb-8 tracking-[0.25em] uppercase cursor-pointer pointer-events-auto">
                     <div class="bg-black/60 rounded-full absolute inset-[1px] z-[-1]"></div>
@@ -508,7 +291,7 @@
                     <span>#1 ON YT JOBS</span>
                 </a>
 
-                <h1 class="font-editorial text-5xl md:text-7xl lg:text-[8.5rem] tracking-tight leading-[1.05] mb-8 relative drop-shadow-2xl">
+                <h1 class="font-editorial text-5xl md:text-7xl lg:text-[8.5rem] tracking-tight leading-[1.05] mb-8 relative drop-shadow-xl">
                     <div class="pb-2">The new standard in</div>
                     <div class="pb-6">
                         <span class="text-italic-premium">media</span> 
@@ -521,12 +304,12 @@
                 </p>
 
                 <div class="max-w-xl mx-auto w-full relative z-30 pointer-events-auto">
-                    <form id="waitlist-form" class="unified-form flex flex-col sm:flex-row items-center p-2 rounded-3xl sm:rounded-full backdrop-blur-xl w-full shadow-2xl">
+                    <form id="waitlist-form" class="unified-form flex flex-col sm:flex-row items-center p-2 rounded-3xl sm:rounded-full backdrop-blur-xl w-full shadow-lg">
                         <div class="w-full relative flex-1">
                             <i data-lucide="mail" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
                             <input type="email" id="email-input" placeholder="Enter your business email..." required class="w-full bg-transparent text-white placeholder-gray-500 pl-12 pr-4 py-4 sm:py-3 focus:outline-none font-inter text-sm md:text-base">
                         </div>
-                        <button type="submit" id="magnetic-btn" class="magnetic-btn w-full sm:w-auto font-inter text-sm font-bold tracking-widest uppercase bg-white text-brand-950 px-8 py-4 sm:py-3 rounded-2xl sm:rounded-full transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(217,70,239,0.8)] mt-2 sm:mt-0 flex-shrink-0">
+                        <button type="submit" id="magnetic-btn" class="magnetic-btn w-full sm:w-auto font-inter text-sm font-bold tracking-widest uppercase bg-white text-brand-950 px-8 py-4 sm:py-3 rounded-2xl sm:rounded-full transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] mt-2 sm:mt-0 flex-shrink-0">
                             <span id="btn-text" class="flex items-center gap-2">Request Access</span>
                         </button>
                     </form>
@@ -535,43 +318,43 @@
         </section>
 
         <!-- 4. PROFESSIONAL COUNTDOWN & INTERACTIVE PRODUCTION UI -->
-        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto mt-10">
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <section class="py-20 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto mt-10">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 
                 <!-- Countdown Panel & Post-Prod UI -->
-                <div class="premium-card p-8 md:p-12 lg:col-span-3 flex flex-col justify-between reveal-3d interactive-3d-card border-brand/30">
+                <div class="premium-card p-6 md:p-10 lg:col-span-3 flex flex-col justify-between reveal-3d interactive-3d-card">
                     
-                    <div class="mb-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="mb-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div>
-                            <h3 class="font-editorial text-3xl text-white mb-1 drop-shadow-md">Core Infrastructure Unlocks</h3>
-                            <p class="text-[11px] uppercase tracking-widest text-brand-light font-inter font-bold">Global Release Schedule</p>
+                            <h3 class="font-editorial text-2xl sm:text-3xl text-white mb-1 drop-shadow-sm">Core Infrastructure Unlocks</h3>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-light font-inter font-bold">Global Release Schedule</p>
                         </div>
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/20 shadow-inner">
-                            <span class="w-2 h-2 rounded-full bg-brand-neon animate-pulse shadow-[0_0_10px_#d946ef]"></span>
-                            <span class="text-[10px] uppercase tracking-widest text-white font-bold">Systems Nominal</span>
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 shadow-inner">
+                            <span class="w-2 h-2 rounded-full bg-brand-light animate-pulse shadow-[0_0_8px_#c4b5fd]"></span>
+                            <span class="text-[9px] uppercase tracking-widest text-white font-semibold">Systems Nominal</span>
                         </div>
                     </div>
 
                     <!-- 22 DAYS Dynamic Timer -->
-                    <div id="countdown" class="flex items-center justify-center sm:justify-start gap-3 sm:gap-4 w-full mb-16">
+                    <div id="countdown" class="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 w-full mb-12">
                         <div class="pro-timer-card">
-                            <div id="days" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight drop-shadow-lg" style="font-variant-numeric: tabular-nums;">22</div>
-                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Days</div>
+                            <div id="days" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-white tracking-tight drop-shadow-md" style="font-variant-numeric: tabular-nums;">22</div>
+                            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Days</div>
                         </div>
-                        <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
+                        <div class="text-xl text-white/20 font-light hidden sm:block">:</div>
                         <div class="pro-timer-card">
-                            <div id="hours" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight drop-shadow-lg" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Hours</div>
+                            <div id="hours" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-white tracking-tight drop-shadow-md" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Hours</div>
                         </div>
-                        <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
+                        <div class="text-xl text-white/20 font-light hidden sm:block">:</div>
                         <div class="pro-timer-card">
-                            <div id="minutes" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight drop-shadow-lg" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Mins</div>
+                            <div id="minutes" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-white tracking-tight drop-shadow-md" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">Mins</div>
                         </div>
-                        <div class="text-2xl text-white/20 font-light hidden sm:block">:</div>
-                        <div class="pro-timer-card border-brand-neon/50 bg-brand-neon/20 shadow-[0_0_40px_rgba(217,70,239,0.3)]">
-                            <div id="seconds" class="font-editorial text-4xl sm:text-5xl md:text-6xl text-white tracking-tight text-shadow-sm" style="font-variant-numeric: tabular-nums;">00</div>
-                            <div class="text-[10px] uppercase tracking-[0.2em] text-brand-neon mt-2 font-bold drop-shadow-[0_0_10px_#d946ef]">Secs</div>
+                        <div class="text-xl text-white/20 font-light hidden sm:block">:</div>
+                        <div class="pro-timer-card border-brand/30 bg-brand/5 shadow-[0_0_15px_rgba(139,92,246,0.1)]">
+                            <div id="seconds" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-white tracking-tight" style="font-variant-numeric: tabular-nums;">00</div>
+                            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-brand-light mt-2 font-bold">Secs</div>
                         </div>
                     </div>
 
@@ -604,10 +387,12 @@
                                         <div class="media-item w-[80%] nle-media-btn"></div>
                                         <div class="media-item w-[90%] nle-media-btn"></div>
                                     </div>
-                                    <div class="viewer group" id="nle-play-btn" style="cursor:pointer;">
-                                        <!-- Play/Pause Icon injected by JS -->
+                                    <div class="viewer group" id="nle-viewer" style="cursor:pointer;">
+                                        <div id="nle-play-btn" class="z-10 transition-transform duration-200 hover:scale-110">
+                                            <i data-lucide="pause-circle" class="w-10 h-10 text-brand-neon drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"></i>
+                                        </div>
                                         <div class="absolute top-2 right-2 flex items-center gap-1.5 z-10">
-                                            <div class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_red]" id="rec-light"></div>
+                                            <div class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_4px_red]" id="rec-light"></div>
                                             <span class="text-[7px] text-red-500 font-bold tracking-widest">REC</span>
                                         </div>
                                     </div>
@@ -626,7 +411,7 @@
                                     <div class="pro-nle-ruler ml-[60px]">
                                         <span class="pro-timecode" style="left: 10%;">01:00:00:00</span>
                                         <span class="pro-timecode" style="left: 50%;">01:00:30:00</span>
-                                        <span class="days-marker hover:scale-110 transition-transform" style="left: 70%;">- 22 DAYS</span>
+                                        <span class="days-marker hover:scale-105 transition-transform" style="left: 70%;">- 22 DAYS</span>
                                     </div>
                                     <div class="pro-track">
                                         <div class="pro-track-header"><span class="pro-track-name">V1</span></div>
@@ -634,7 +419,7 @@
                                             <div class="pro-clip pro-clip-video nle-clip-interactive" style="left: 5%; width: 40%;">
                                                 <span class="pro-clip-label">A001_C014.ARRI</span>
                                             </div>
-                                            <div class="pro-clip pro-clip-video nle-clip-interactive active-clip" style="left: 48%; width: 30%; opacity: 0.9; border-color: #d946ef;">
+                                            <div class="pro-clip pro-clip-video nle-clip-interactive active-clip" style="left: 48%; width: 30%; opacity: 0.9; border-color: #8b5cf6;">
                                                 <span class="pro-clip-label">VFX_Comp_v4.exr</span>
                                             </div>
                                         </div>
@@ -652,12 +437,12 @@
                     </div>
                 </div>
 
-                <div class="premium-card p-10 lg:col-span-2 flex flex-col justify-center reveal-3d interactive-3d-card hover:border-brand-neon/50">
-                    <div class="w-14 h-14 rounded-full bg-brand-900 border border-brand-neon/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(217,70,239,0.4)]">
-                        <i data-lucide="cloud-lightning" class="w-6 h-6 text-brand-neon icon-pulse"></i>
+                <div class="premium-card p-8 lg:col-span-2 flex flex-col justify-center reveal-3d interactive-3d-card">
+                    <div class="w-12 h-12 rounded-full bg-brand-900 border border-brand/30 flex items-center justify-center mb-6 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+                        <i data-lucide="cloud-lightning" class="w-5 h-5 text-brand-light icon-pulse"></i>
                     </div>
-                    <h3 class="font-editorial text-4xl text-white mb-4 drop-shadow-md">Unified Review Hub</h3>
-                    <p class="text-gray-300 text-sm font-light leading-relaxed">
+                    <h3 class="font-editorial text-3xl text-white mb-3 drop-shadow-sm">Unified Review Hub</h3>
+                    <p class="text-gray-400 text-sm font-light leading-relaxed">
                         Eliminate scattered feedback. Frame-accurate annotations, version control, and real-time client approvals natively integrated into your ACES color workspace.
                     </p>
                 </div>
@@ -665,62 +450,44 @@
             </div>
         </section>
 
-        <!-- 5. EXTENDED SECTION: THE ECOSYSTEM WITH EXTREME 3D ENERGY WIRES -->
-        <section class="py-32 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto">
-            <div class="text-center mb-16 lg:mb-24 reveal-up">
-                <p class="text-[12px] uppercase tracking-[0.4em] text-brand-neon mb-4 font-bold drop-shadow-[0_0_8px_#d946ef]">End-To-End Pipeline</p>
-                <h2 class="font-editorial text-5xl md:text-7xl text-white drop-shadow-lg">The Aktivus Ecosystem</h2>
-                <p class="text-gray-300 mt-6 font-light text-xl max-w-3xl mx-auto">A seamless flow of creative energy. Every stage of production, unified in one highly optimized, cloud-native platform.</p>
+        <!-- 5. EXTENDED SECTION: THE ECOSYSTEM -->
+        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-7xl mx-auto">
+            <div class="text-center mb-16 lg:mb-20 reveal-up">
+                <p class="text-[11px] uppercase tracking-[0.4em] text-brand-light mb-3 font-bold">End-To-End Pipeline</p>
+                <h2 class="font-editorial text-4xl md:text-6xl text-white drop-shadow-sm">The Aktivus Ecosystem</h2>
+                <p class="text-gray-400 mt-4 font-light text-lg max-w-2xl mx-auto">A seamless flow of creative energy. Every stage of production, unified in one highly optimized, cloud-native platform.</p>
             </div>
 
-            <!-- T-Shape Layout for 4 Cards with 3D Energy Tubes -->
-            <div class="relative w-full py-10">
-                
-                <!-- NEW 3D ENERGY TUBES & ANIMATED BLASTS -->
-                <div class="ecosystem-wire-network hidden lg:block">
-                    <!-- Horizontal Tube Left (Pre to Prod) -->
-                    <div class="eco-3d-tube tube-h-left">
-                        <div class="energy-pulse pulse-right"></div>
-                    </div>
-                    <!-- Horizontal Tube Right (Post to Prod) -->
-                    <div class="eco-3d-tube tube-h-right">
-                        <div class="energy-pulse pulse-left"></div>
-                    </div>
-                    <!-- Central Glowing Junction -->
-                    <div class="tube-junction"></div>
-                    <!-- Vertical Tube Main (Prod to Pub) -->
-                    <div class="eco-3d-tube tube-v-main">
-                        <div class="energy-pulse pulse-down"></div>
-                    </div>
-                </div>
+            <!-- T-Shape Layout for 4 Cards -->
+            <div class="relative w-full py-4">
 
                 <!-- Top Row (3 Cards) -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
-                    <div class="premium-card p-10 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.1s;">
-                        <div class="w-20 h-20 rounded-full bg-[#0a011a] border border-white/20 mb-8 flex items-center justify-center shadow-[0_0_40px_rgba(255,255,255,0.15)] group-hover:scale-110 transition-transform">
-                            <i data-lucide="book-open" class="w-8 h-8 text-white icon-pulse"></i>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
+                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.1s;">
+                        <div class="w-16 h-16 rounded-full bg-[#0a011a] border border-white/10 mb-6 flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform">
+                            <i data-lucide="book-open" class="w-6 h-6 text-white icon-pulse"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-4 group-hover:text-brand-light transition-colors">1. Pre-Production</h3>
+                        <h3 class="font-editorial text-2xl text-white mb-3 transition-colors">1. Pre-Production</h3>
                         <p class="text-gray-400 text-sm font-light leading-relaxed">
                             Script breakdowns, dynamic storyboarding, and smart shoot scheduling synchronized instantly.
                         </p>
                     </div>
 
-                    <div class="premium-card p-10 flex flex-col items-center text-center reveal-3d interactive-3d-card hover:border-brand/60 group" style="transition-delay: 0.2s;">
-                        <div class="w-20 h-20 rounded-full bg-[#0a011a] border border-brand/60 mb-8 flex items-center justify-center shadow-[0_0_40px_rgba(139,92,246,0.5)] group-hover:scale-110 transition-transform">
-                            <i data-lucide="video" class="w-8 h-8 text-brand-light icon-pulse"></i>
+                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.2s;">
+                        <div class="w-16 h-16 rounded-full bg-[#0a011a] border border-brand/40 mb-6 flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.2)] group-hover:scale-105 transition-transform">
+                            <i data-lucide="video" class="w-6 h-6 text-brand-light icon-pulse"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-4 group-hover:text-brand-light transition-colors">2. Production</h3>
+                        <h3 class="font-editorial text-2xl text-white mb-3 transition-colors">2. Production</h3>
                         <p class="text-gray-400 text-sm font-light leading-relaxed">
                             Secure cloud asset ingest and instant proxy generation synced directly from the camera card.
                         </p>
                     </div>
 
-                    <div class="premium-card p-10 flex flex-col items-center text-center reveal-3d interactive-3d-card hover:border-brand-neon/60 group" style="transition-delay: 0.3s;">
-                        <div class="w-20 h-20 rounded-full bg-[#0a011a] border border-brand-neon/60 mb-8 flex items-center justify-center shadow-[0_0_40px_rgba(217,70,239,0.5)] group-hover:scale-110 transition-transform">
-                            <i data-lucide="scissors" class="w-8 h-8 text-brand-neon icon-pulse"></i>
+                    <div class="premium-card p-8 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.3s;">
+                        <div class="w-16 h-16 rounded-full bg-[#0a011a] border border-brand/60 mb-6 flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.3)] group-hover:scale-105 transition-transform">
+                            <i data-lucide="scissors" class="w-6 h-6 text-brand-light icon-pulse"></i>
                         </div>
-                        <h3 class="font-editorial text-2xl text-white mb-4 group-hover:text-brand-neon transition-colors">3. Post-Production</h3>
+                        <h3 class="font-editorial text-2xl text-white mb-3 transition-colors">3. Post-Production</h3>
                         <p class="text-gray-400 text-sm font-light leading-relaxed">
                             Heavy VFX compositing, pro node-based HDR color grading, and immersive spatial audio mixing.
                         </p>
@@ -728,12 +495,12 @@
                 </div>
 
                 <!-- Bottom Row (1 Center Card Publishing) -->
-                <div class="flex justify-center mt-12 lg:mt-32 relative z-10">
-                    <div class="w-full max-w-md premium-card p-10 flex flex-col items-center text-center reveal-3d interactive-3d-card hover:border-cyan-500/60 group" style="transition-delay: 0.4s;">
-                        <div class="w-24 h-24 rounded-full bg-[#0a011a] border border-cyan-500/60 mb-8 flex items-center justify-center shadow-[0_0_60px_rgba(6,182,212,0.6)] group-hover:scale-110 transition-transform">
-                            <i data-lucide="rocket" class="w-10 h-10 text-cyan-400 icon-pulse"></i>
+                <div class="flex justify-center mt-8 lg:mt-12 relative z-10">
+                    <div class="w-full max-w-md premium-card p-8 flex flex-col items-center text-center reveal-3d interactive-3d-card group" style="transition-delay: 0.4s;">
+                        <div class="w-16 h-16 rounded-full bg-[#0a011a] border border-brand/80 mb-6 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] group-hover:scale-105 transition-transform">
+                            <i data-lucide="rocket" class="w-6 h-6 text-brand-light icon-pulse"></i>
                         </div>
-                        <h3 class="font-editorial text-3xl text-white mb-4 group-hover:text-cyan-400 transition-colors">4. Publishing</h3>
+                        <h3 class="font-editorial text-2xl text-white mb-3 transition-colors">4. Publishing</h3>
                         <p class="text-gray-400 text-sm font-light leading-relaxed">
                             Multi-platform delivery formatting, one-click mastering, and direct secure handoffs to clients.
                         </p>
@@ -742,48 +509,48 @@
             </div>
         </section>
 
-        <!-- 7. FAQ SECTION -->
-        <section class="py-24 px-4 md:px-6 relative z-10 w-full max-w-4xl mx-auto">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-editorial text-4xl md:text-5xl text-white">Frequently Asked Questions</h2>
+        <!-- 7. FAQ SECTION (Fixed Bug) -->
+        <section class="py-20 px-4 md:px-6 relative z-10 w-full max-w-4xl mx-auto">
+            <div class="text-center mb-12 reveal-up">
+                <h2 class="font-editorial text-3xl md:text-5xl text-white">Frequently Asked Questions</h2>
             </div>
             
-            <div class="space-y-6">
-                <div class="premium-card p-8 reveal-up hover:border-white/20 transition-colors" style="transition-delay: 0.1s;">
-                    <h4 class="font-inter font-semibold text-white text-xl">How does Aktivus streamline pre-production planning?</h4>
-                    <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Aktivus provides integrated moodboards, interactive script breakdowns, and smart scheduling tools that automatically sync with your production calendar, ensuring the entire crew is aligned before the camera even rolls.</p>
+            <div class="space-y-4">
+                <div class="premium-card p-6 md:p-8 reveal-up hover:border-white/10 transition-colors" style="transition-delay: 0.1s;">
+                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">How does Aktivus streamline pre-production planning?</h4>
+                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Aktivus provides integrated moodboards, interactive script breakdowns, and smart scheduling tools that automatically sync with your production calendar, ensuring the entire crew is aligned before the camera even rolls.</p>
                 </div>
-                <div class="premium-card p-8 reveal-up hover:border-brand/40 transition-colors" style="transition-delay: 0.2s;">
-                    <h4 class="font-inter font-semibold text-white text-xl">Can we manage raw footage and dailies securely during production?</h4>
-                    <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Yes. Our lightning-fast cloud ingest engine allows you to upload dailies directly from set. Editors can access lightweight proxies instantly, while heavy high-res RAW files (like ARRIRAW or REDCODE) sync securely in the background.</p>
+                <div class="premium-card p-6 md:p-8 reveal-up hover:border-brand/30 transition-colors" style="transition-delay: 0.2s;">
+                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">Can we manage raw footage and dailies securely during production?</h4>
+                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Yes. Our lightning-fast cloud ingest engine allows you to upload dailies directly from set. Editors can access lightweight proxies instantly, while heavy high-res RAW files (like ARRIRAW or REDCODE) sync securely in the background.</p>
                 </div>
-                <div class="premium-card p-8 reveal-up hover:border-brand-neon/40 transition-colors" style="transition-delay: 0.3s;">
-                    <h4 class="font-inter font-semibold text-white text-xl">Does the post-production suite handle heavy VFX and color grading?</h4>
-                    <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Absolutely. Aktivus features a true node-based compositing engine and professional ACES color wheels rivaling industry-standard studio software. All powered by our distributed cloud rendering, ensuring your local machine never lags.</p>
+                <div class="premium-card p-6 md:p-8 reveal-up hover:border-brand/40 transition-colors" style="transition-delay: 0.3s;">
+                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">Does the post-production suite handle heavy VFX and color grading?</h4>
+                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Absolutely. Aktivus features a true node-based compositing engine and professional ACES color wheels rivaling industry-standard studio software. All powered by our distributed cloud rendering, ensuring your local machine never lags.</p>
                 </div>
-                <div class="premium-card p-8 reveal-up hover:border-cyan-500/40 transition-colors" style="transition-delay: 0.4s;">
-                    <h4 class="font-inter font-semibold text-white text-xl">How secure is the cloud storage for unreleased IP?</h4>
-                    <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Security is our priority. We utilize AES-256 military-grade encryption at rest and in transit. Visual watermarking and granular role-based access control (RBAC) ensure your high-value IP never leaks before release.</p>
+                <div class="premium-card p-6 md:p-8 reveal-up hover:border-brand/50 transition-colors" style="transition-delay: 0.4s;">
+                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">How secure is the cloud storage for unreleased IP?</h4>
+                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Security is our priority. We utilize AES-256 military-grade encryption at rest and in transit. Visual watermarking and granular role-based access control (RBAC) ensure your high-value IP never leaks before release.</p>
                 </div>
-                <div class="premium-card p-8 reveal-up hover:border-success/40 transition-colors" style="transition-delay: 0.5s;">
-                    <h4 class="font-inter font-semibold text-white text-xl">Does it integrate with standard NLEs like Premiere Pro or DaVinci?</h4>
-                    <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Yes. While Aktivus offers a robust internal suite, we fully support AAF and XML roundtripping, allowing seamless integration with Adobe Premiere Pro, Final Cut Pro, and DaVinci Resolve workflows via our custom panel plugins.</p>
+                <div class="premium-card p-6 md:p-8 reveal-up hover:border-brand/60 transition-colors" style="transition-delay: 0.5s;">
+                    <h4 class="font-inter font-semibold text-white text-lg md:text-xl">Does it integrate with standard NLEs like Premiere Pro or DaVinci?</h4>
+                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed">Yes. While Aktivus offers a robust internal suite, we fully support AAF and XML roundtripping, allowing seamless integration with Adobe Premiere Pro, Final Cut Pro, and DaVinci Resolve workflows via our custom panel plugins.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Manifesto Quote -->
-        <section class="pb-32 pt-16 px-4 w-full max-w-6xl mx-auto">
-             <div class="premium-card interactive-3d-card p-12 md:p-24 flex flex-col items-center justify-center reveal-3d text-center border-brand/40 shadow-[0_0_100px_rgba(139,92,246,0.15)] relative overflow-visible transform hover:scale-[1.02] transition-transform duration-700">
-                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-60 h-30 bg-brand-neon/20 blur-[60px] pointer-events-none"></div>
+        <!-- Manifesto Quote (Restored properly) -->
+        <section class="pb-24 pt-10 px-4 w-full max-w-5xl mx-auto">
+             <div class="premium-card interactive-3d-card p-10 md:p-20 flex flex-col items-center justify-center reveal-3d text-center border-brand/30 shadow-[0_0_50px_rgba(139,92,246,0.1)] relative overflow-visible transform hover:scale-[1.01] transition-transform duration-700">
+                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-60 h-30 bg-brand-neon/10 blur-[40px] pointer-events-none"></div>
                 
-                <i data-lucide="sparkles" class="w-12 h-12 text-brand-light mb-10 drop-shadow-[0_0_15px_rgba(167,139,250,0.8)] animate-pulse"></i>
-                <p class="font-editorial text-3xl md:text-5xl text-white italic leading-tight max-w-4xl tracking-tight drop-shadow-lg">
+                <i data-lucide="sparkles" class="w-12 h-12 text-brand-light mb-10 drop-shadow-[0_0_10px_rgba(167,139,250,0.5)] animate-pulse"></i>
+                <p class="font-editorial text-3xl md:text-5xl text-white italic leading-tight max-w-4xl tracking-tight drop-shadow-sm">
                     "We built Aktivus to spark a revolution in the media and entertainment industry. We are breaking down the barriers between production teams and clients to provide a premium, unified ecosystem where true creativity thrives without friction."
                 </p>
                 <div class="mt-14 flex flex-col items-center">
                     <div class="w-20 h-[2px] bg-gradient-to-r from-transparent via-brand-neon to-transparent mb-6"></div>
-                    <p class="text-[12px] tracking-[0.5em] uppercase text-brand-light font-inter font-bold drop-shadow-[0_0_5px_rgba(167,139,250,0.5)]">The Aktivus Vision</p>
+                    <p class="text-[12px] tracking-[0.5em] uppercase text-brand-light font-inter font-bold opacity-80">The Aktivus Vision</p>
                 </div>
             </div>
         </section>
@@ -800,13 +567,13 @@
             </div>
             
             <div class="flex gap-8 text-gray-400">
-                <a href="https://x.com/Aktivuslimited" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-125 hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] transition-all duration-300" aria-label="X (Twitter)">
+                <a href="https://x.com/Aktivuslimited" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-300" aria-label="X (Twitter)">
                     <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
-                <a href="https://www.instagram.com/aktivus.in" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-125 hover:drop-shadow-[0_0_15px_rgba(217,70,239,0.8)] transition-all duration-300" aria-label="Instagram">
+                <a href="https://www.instagram.com/aktivus.in" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(217,70,239,0.5)] transition-all duration-300" aria-label="Instagram">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
-                <a href="https://discord.gg/wwAn2yMWx4" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-125 hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.8)] transition-all duration-300" aria-label="Discord">
+                <a href="https://discord.gg/wwAn2yMWx4" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(139,92,246,0.5)] transition-all duration-300" aria-label="Discord">
                     <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
                 </a>
             </div>
@@ -815,7 +582,7 @@
         </div>
         
         <div class="max-w-7xl mx-auto border-t border-white/5 pt-6 flex justify-center">
-            <p class="text-[10px] tracking-[0.4em] text-gray-500 uppercase font-inter hover:text-brand-light hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all duration-300 cursor-default">
+            <p class="text-[10px] tracking-[0.4em] text-gray-500 uppercase font-inter hover:text-brand-light transition-all duration-300 cursor-default opacity-50 hover:opacity-100">
                 Developed by Vedonyx
             </p>
         </div>
@@ -860,69 +627,6 @@
         initLoader();
 
         // ---------------------------------
-        // DRAGGABLE 3D UNIVERSE PHYSICS (ZERO LAG)
-        // ---------------------------------
-        const heroWrapper = document.getElementById('hero-interactive-area');
-        const heroBgContainer = document.getElementById('hero-space-container');
-        
-        let isDragging = false;
-        let startX = 0, startY = 0;
-        let curRotX = 60, curRotY = 0, curRotZ = -30; 
-        let velX = 0, velY = 0;
-        const friction = 0.96; 
-
-        if (heroWrapper && heroBgContainer) {
-            heroWrapper.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startX = e.clientX; startY = e.clientY;
-            });
-            heroWrapper.addEventListener('touchstart', (e) => {
-                isDragging = true;
-                startX = e.touches[0].clientX; startY = e.touches[0].clientY;
-            }, {passive: false});
-
-            window.addEventListener('mouseup', () => { isDragging = false; });
-            window.addEventListener('touchend', () => { isDragging = false; });
-
-            window.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                velX = (e.clientX - startX) * 0.4;
-                velY = (e.clientY - startY) * 0.4;
-                startX = e.clientX; startY = e.clientY;
-            });
-
-            window.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                velX = (e.touches[0].clientX - startX) * 0.5;
-                velY = (e.touches[0].clientY - startY) * 0.5;
-                startX = e.touches[0].clientX; startY = e.touches[0].clientY;
-            }, {passive: false});
-
-            function animateGlobe() {
-                if (!isDragging) {
-                    curRotX -= velY;
-                    curRotZ += velX; // Map X drag to Z spin for this astrolabe
-                    velX *= friction; velY *= friction;
-                    if (Math.abs(velX) < 0.1 && Math.abs(velY) < 0.1) {
-                        curRotZ += 0.15; // Auto rotate slightly
-                    }
-                } else {
-                    curRotX -= velY;
-                    curRotZ += velX;
-                    velX = 0; velY = 0; 
-                }
-
-                // Clamp to prevent complete flip
-                curRotX = Math.max(20, Math.min(85, curRotX));
-
-                // Hardware accelerated CSS
-                heroBgContainer.style.transform = `translate3d(0,0,0) rotateX(${curRotX}deg) rotateZ(${curRotZ}deg)`;
-                requestAnimationFrame(animateGlobe);
-            }
-            animateGlobe();
-        }
-
-        // ---------------------------------
         // CARD HOVERS & GLOBAL MOUSE GLOW
         // ---------------------------------
         const cursorGlow = document.getElementById('cursor-glow');
@@ -950,9 +654,9 @@
             interactiveCards.forEach(card => {
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
-                    const rotateX = (((e.clientY - rect.top) - (rect.height / 2)) / (rect.height / 2)) * -4; 
-                    const rotateY = (((e.clientX - rect.left) - (rect.width / 2)) / (rect.width / 2)) * 4;
-                    card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+                    const rotateX = (((e.clientY - rect.top) - (rect.height / 2)) / (rect.height / 2)) * -2; 
+                    const rotateY = (((e.clientX - rect.left) - (rect.width / 2)) / (rect.width / 2)) * 2;
+                    card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-3px)`;
                 });
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = `perspective(1500px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
@@ -964,7 +668,6 @@
         // NLE UI LOGIC
         // ---------------------------------
         const nleTabs = document.querySelectorAll('.nle-tab');
-        const nleBody = document.getElementById('nle-body');
         
         nleTabs.forEach(tab => {
             tab.addEventListener('click', () => {
@@ -973,43 +676,86 @@
             });
         });
 
+        const viewer = document.getElementById('nle-viewer');
         const playBtn = document.getElementById('nle-play-btn');
         const playhead = document.getElementById('main-playhead');
         const recLight = document.getElementById('rec-light');
         const vuBars = document.querySelectorAll('.vu-bar');
+        const interactiveClips = document.querySelectorAll('.nle-clip-interactive');
         let isPlaying = true; 
 
-        if (playBtn) {
-            playBtn.innerHTML = '<i data-lucide="pause-circle" class="w-10 h-10 text-brand-neon transition-colors drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"></i>';
-            lucide.createIcons();
-
-            playBtn.addEventListener('click', () => {
+        if (viewer && playBtn) {
+            viewer.addEventListener('click', () => {
                 isPlaying = !isPlaying;
-                const icon = playBtn.querySelector('i');
                 if(isPlaying) {
-                    icon.setAttribute('data-lucide', 'pause-circle');
-                    icon.classList.replace('text-white/50', 'text-brand-neon');
-                    playhead.style.animationPlayState = 'running';
-                    recLight.style.animationPlayState = 'running';
+                    playBtn.innerHTML = '<i data-lucide="pause-circle" class="w-10 h-10 text-brand-neon drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"></i>';
+                    if (playhead) playhead.style.animationPlayState = 'running';
+                    if (recLight) recLight.style.animationPlayState = 'running';
                     vuBars.forEach(b => b.style.animationPlayState = 'running');
                 } else {
-                    icon.setAttribute('data-lucide', 'play-circle');
-                    icon.classList.replace('text-brand-neon', 'text-white/50');
-                    playhead.style.animationPlayState = 'paused';
-                    recLight.style.animationPlayState = 'paused';
+                    playBtn.innerHTML = '<i data-lucide="play-circle" class="w-10 h-10 text-white/50 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"></i>';
+                    if (playhead) playhead.style.animationPlayState = 'paused';
+                    if (recLight) recLight.style.animationPlayState = 'paused';
                     vuBars.forEach(b => b.style.animationPlayState = 'paused');
                 }
                 lucide.createIcons();
             });
         }
 
-        const interactiveClips = document.querySelectorAll('.nle-clip-interactive');
         interactiveClips.forEach(clip => {
             clip.addEventListener('click', () => {
                 interactiveClips.forEach(c => c.classList.remove('active-clip'));
                 clip.classList.add('active-clip');
             });
         });
+
+        // ---------------------------------
+        // WORKING WAITLIST FORM LOGIC
+        // ---------------------------------
+        const waitlistForm = document.getElementById('waitlist-form');
+        const magneticBtn = document.getElementById('magnetic-btn');
+        const btnText = document.getElementById('btn-text');
+        const emailInput = document.getElementById('email-input');
+
+        if(waitlistForm) {
+            waitlistForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if(!emailInput.value) return;
+
+                btnText.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Processing...`;
+                lucide.createIcons();
+                magneticBtn.style.pointerEvents = 'none';
+
+                setTimeout(() => {
+                    btnText.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Access Requested`;
+                    magneticBtn.classList.add('btn-success');
+                    emailInput.value = '';
+                    emailInput.placeholder = 'You are on the list!';
+                    lucide.createIcons();
+                    
+                    setTimeout(() => {
+                        btnText.innerHTML = `Request Access`;
+                        magneticBtn.classList.remove('btn-success');
+                        magneticBtn.style.pointerEvents = 'auto';
+                        emailInput.placeholder = 'Enter your business email...';
+                    }, 4000);
+                }, 2000);
+            });
+        }
+
+        if (window.matchMedia("(pointer: fine)").matches && magneticBtn) {
+            magneticBtn.addEventListener('mousemove', (e) => {
+                const rect = magneticBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                magneticBtn.style.transform = `translate3d(${x * 0.15}px, ${y * 0.15}px, 0) scale(1.02)`;
+            });
+            magneticBtn.addEventListener('mouseleave', () => {
+                if(!magneticBtn.classList.contains('btn-success')) {
+                    magneticBtn.style.transform = `translate3d(0px, 0px, 0) scale(1)`;
+                }
+            });
+        }
 
         // ---------------------------------
         // 22 DAYS CREATIVE COUNTDOWN TIMER
